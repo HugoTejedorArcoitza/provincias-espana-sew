@@ -235,6 +235,7 @@ class AplicacionReservas
         echo '<input type="hidden" name="accion" value="reserva" />';
         echo '<label>Correo registrado <input type="email" name="correo" required /></label>';
         echo '<label>Recurso <select name="recurso" required>';
+        echo '<option value="" disabled selected>Selecciona un recurso...</option>';
         foreach ($recursos as $recurso) {
             echo '<option value="' . (int)$recurso['id_recurso'] . '">' . htmlspecialchars($recurso['nombre'], ENT_QUOTES, 'UTF-8') . '</option>';
         }
