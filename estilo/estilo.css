@@ -156,7 +156,8 @@ article div img {
 
 /* Especificidad: (0,0,3) */
 article div svg {
-    background-color: rgba(255, 255, 255, 0.82);
+    background-color: rgba(255, 255, 255, 0.82); /* Se omite la propiedad 'color' al declarar 'background-color' porque
+    este elemento es un SVG puramente gráfico sin texto */
 }
 
 /* Especificidad: (0,0,3) */
