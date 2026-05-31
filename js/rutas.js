@@ -1,223 +1,192 @@
 "use strict";
 
-class Coordenada {
-    constructor(longitud, latitud, altitud) {
-        this.longitud = Number(longitud);
-        this.latitud = Number(latitud);
-        this.altitud = Number(altitud);
-    }
-}
-
-class MapaKml {
-    constructor(contenedor, archivo) {
-        this.contenedor = contenedor;
-        this.archivo = archivo;
-        this.zoom = 15;
+class GestorRutasTuristicas {
+    constructor() {
+        this.rutas = [];
+        this.contenedor = $("main section").first();
     }
 
-    cargar() {
-        $.ajax({
-            url: `xml/${this.archivo}`,
-            dataType: "xml"
-        }).done((kml) => this.dibujar(kml))
-            .fail(() => this.contenedor.append($("<p></p>").text("No se pudo cargar la planimetría KML.")));
-    }
-
-    dibujar(kml) {
-        const coordenadas = this.extraerCoordenadas(kml);
-        if (coordenadas.length === 0) {
-            this.contenedor.append($("<p></p>").text("El archivo KML no contiene coordenadas."));
-            return;
+    iniciar() {
+            // Como Leaflet ya está cargado de forma segura en el HTML,
+            // disparamos la lectura del XML directamente.
+            this.cargarDatosXML();
         }
-        const centro = this.centro(coordenadas);
-        this.insertarTeselas(centro);
-        this.insertarLinea(coordenadas);
-        this.contenedor.append($("<p></p>").text(`Planimetría cargada desde ${this.archivo}`));
-    }
 
-    extraerCoordenadas(kml) {
-        const nodos = kml.getElementsByTagNameNS("*", "coordinates");
-        if (nodos.length === 0) {
-            return [];
-        }
-        return nodos[0].textContent.trim().split(/\s+/).map((par) => {
-            const partes = par.split(",");
-            return new Coordenada(partes[0], partes[1], partes[2] || 0);
-        });
-    }
-
-    centro(coordenadas) {
-        const suma = coordenadas.reduce((acum, actual) => ({
-            longitud: acum.longitud + actual.longitud,
-            latitud: acum.latitud + actual.latitud
-        }), { longitud: 0, latitud: 0 });
-        return {
-            longitud: suma.longitud / coordenadas.length,
-            latitud: suma.latitud / coordenadas.length
-        };
-    }
-
-    insertarTeselas(centro) {
-        const tile = this.longitudLatitudATesela(centro.longitud, centro.latitud, this.zoom);
-        for (let y = -1; y <= 1; y += 1) {
-            for (let x = -1; x <= 1; x += 1) {
-                const imagen = $("<img />").attr({
-                    src: `https://tile.openstreetmap.org/${this.zoom}/${tile.x + x}/${tile.y + y}.png`,
-                    alt: "Tesela cartográfica de OpenStreetMap"
-                });
-                this.contenedor.append(imagen);
-            }
-        }
-    }
-
-    insertarLinea(coordenadas) {
-        const puntos = coordenadas.map((punto) => {
-            const proyectado = this.proyectar(punto, coordenadas);
-            return `${proyectado.x},${proyectado.y}`;
-        }).join(" ");
-        const svg = $(document.createElementNS("http://www.w3.org/2000/svg", "svg")).attr("viewBox", "0 0 900 660");
-        const polyline = $(document.createElementNS("http://www.w3.org/2000/svg", "polyline")).attr({
-            points: puntos,
-            fill: "none",
-            stroke: "#c21807",
-            "stroke-width": "8",
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round"
-        });
-        svg.append(polyline);
-        coordenadas.forEach((punto) => {
-            const proyectado = this.proyectar(punto, coordenadas);
-            const circulo = $(document.createElementNS("http://www.w3.org/2000/svg", "circle")).attr({
-                cx: proyectado.x,
-                cy: proyectado.y,
-                r: 9,
-                fill: "#ffffff",
-                stroke: "#004f59",
-                "stroke-width": 5
-            });
-            svg.append(circulo);
-        });
-        this.contenedor.append(svg);
-    }
-
-    proyectar(punto, coordenadas) {
-        const longitudes = coordenadas.map((c) => c.longitud);
-        const latitudes = coordenadas.map((c) => c.latitud);
-        const minLon = Math.min(...longitudes);
-        const maxLon = Math.max(...longitudes);
-        const minLat = Math.min(...latitudes);
-        const maxLat = Math.max(...latitudes);
-        const margen = 70;
-        const ancho = 900 - margen * 2;
-        const alto = 660 - margen * 2;
-        return {
-            x: margen + ((punto.longitud - minLon) / Math.max(maxLon - minLon, 0.0001)) * ancho,
-            y: margen + ((maxLat - punto.latitud) / Math.max(maxLat - minLat, 0.0001)) * alto
-        };
-    }
-
-    longitudLatitudATesela(longitud, latitud, zoom) {
-        const latRad = latitud * Math.PI / 180;
-        const escala = 2 ** zoom;
-        return {
-            x: Math.floor((longitud + 180) / 360 * escala),
-            y: Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * escala)
-        };
-    }
-}
-
-class RutasTuristicas {
-    constructor(seccion) {
-        this.seccion = seccion;
-    }
-
-    cargar() {
+    cargarDatosXML() {
+        // Obligatorio: uso de $.ajax (jQuery) encapsulado
         $.ajax({
             url: "xml/rutas.xml",
-            dataType: "xml"
-        }).done((xml) => this.mostrar(xml))
-            .fail(() => this.seccion.find("p").text("No se pudo cargar el archivo local rutas.xml."));
-    }
-
-    mostrar(xml) {
-        this.seccion.find("p").remove();
-        $(xml).find("ruta").each((indice, elemento) => this.seccion.append(this.crearArticulo($(elemento), indice)));
-    }
-
-    crearArticulo(ruta, indice) {
-        const articulo = $("<article></article>");
-        articulo.append($("<h3></h3>").text(ruta.children("nombre").text()));
-        articulo.append($("<p></p>").text(ruta.children("descripcion").text()));
-        articulo.append(this.crearListaDatos(ruta));
-        articulo.append($("<h4></h4>").text("Referencias"));
-        articulo.append(this.crearLista(ruta.find("referencias referencia")));
-        articulo.append($("<h4></h4>").text("Hitos"));
-        articulo.append(this.crearHitos(ruta));
-        articulo.append($("<h4></h4>").text("Planimetría"));
-        const mapa = $("<div></div>");
-        articulo.append(mapa);
-        new MapaKml(mapa, ruta.children("planimetria").text()).cargar();
-        articulo.append($("<h4></h4>").text("Altimetría"));
-        this.cargarSvg(articulo, ruta.children("altimetria").text(), indice);
-        return articulo;
-    }
-
-    crearListaDatos(ruta) {
-        const lista = $("<dl></dl>");
-        const datos = [
-            ["Tipo", ruta.children("tipo").text()],
-            ["Transporte", ruta.children("transporte").text()],
-            ["Inicio", `${ruta.children("lugarInicio").text()}, ${ruta.children("direccionInicio").text()}`],
-            ["Fecha y hora", `${ruta.children("fecha").text() || "Flexible"} ${ruta.children("hora").text() || ""}`],
-            ["Duración", ruta.children("duracion").text()],
-            ["Agencia", ruta.children("agencia").text()],
-            ["Personas adecuadas", ruta.children("personas").text()],
-            ["Recomendación", `${ruta.children("recomendacion").text()} de 10`]
-        ];
-        datos.forEach((dato) => {
-            lista.append($("<dt></dt>").text(dato[0]));
-            lista.append($("<dd></dd>").text(dato[1]));
+            dataType: "xml",
+            success: (xml) => this.procesarXML(xml),
+            error: () => this.contenedor.append($("<p>").text("Error crítico: No se pudo cargar el archivo rutas.xml."))
         });
-        return lista;
     }
 
-    crearLista(nodos) {
-        const lista = $("<ul></ul>");
-        nodos.each((indice, nodo) => {
-            const url = $(nodo).text();
-            lista.append($("<li></li>").append($("<a></a>").attr("href", url).text(url)));
+    procesarXML(xml) {
+            this.contenedor.empty();
+
+            $(xml).find("ruta").each((indice, nodo) => {
+                const rutaXML = $(nodo);
+                const ruta = {
+                    id: indice,
+                    nombre: rutaXML.children("nombre").text(),
+                    tipo: rutaXML.children("tipo").text(),
+                    medio: rutaXML.children("transporte").text(), // Tu XML usa <transporte>
+                    duracion: rutaXML.children("duracion").text(),
+                    descripcion: rutaXML.children("descripcion").text(),
+                    kml: rutaXML.children("planimetria").text(),
+                    svg: rutaXML.children("altimetria").text(),
+                    hitos: [],
+                    referencias: []
+                };
+
+                // Extracción de coordenadas de inicio (Tu XML usa <coordenada>)
+                const inicio = rutaXML.children("coordenada");
+                ruta.inicio = {
+                    lat: parseFloat(inicio.children("latitud").text()),
+                    lng: parseFloat(inicio.children("longitud").text())
+                };
+
+                // Extracción de hitos
+                rutaXML.find("hitos hito").each((_, hitoNodo) => {
+                    const hitoXML = $(hitoNodo);
+                    // Tu XML usa <coordenada> dentro de hito
+                    const coords = hitoXML.children("coordenada");
+                    ruta.hitos.push({
+                        nombre: hitoXML.children("nombreHito").text(),
+                        descripcion: hitoXML.children("descripcionHito").text(),
+                        // Tu XML usa <distanciaAnterior>
+                        distancia: hitoXML.children("distanciaAnterior").text() + " " + hitoXML.children("distanciaAnterior").attr("unidades"),
+                        lat: parseFloat(coords.children("latitud").text()),
+                        lng: parseFloat(coords.children("longitud").text()),
+                        // Tu XML usa <foto> dentro de <galeriaFotos>
+                        fotos: hitoXML.find("galeriaFotos foto").map((_, f) => $(f).text()).get()
+                    });
+                });
+
+                this.rutas.push(ruta);
+                this.construirArticulo(ruta);
+            });
+        }
+
+    construirArticulo(ruta) {
+        const articulo = $("<article>");
+        articulo.append($("<h3>").text(ruta.nombre));
+        articulo.append($("<p>").text(ruta.descripcion));
+
+        // Lista de datos principales
+        const lista = $("<ul>");
+        lista.append($("<li>").text(`Tipo de ruta: ${ruta.tipo}`));
+        lista.append($("<li>").text(`Transporte: ${ruta.medio}`));
+        lista.append($("<li>").text(`Duración: ${ruta.duracion}`));
+        articulo.append(lista);
+
+        // Hitos
+        articulo.append($("<h4>").text("Puntos de interés (Hitos)"));
+        const listaHitos = $("<ol>");
+        ruta.hitos.forEach(hito => {
+            const item = $("<li>").html(`<strong>${hito.nombre}</strong>: ${hito.descripcion}. <em>(Distancia: ${hito.distancia})</em>`);
+            if(hito.fotos.length > 0) {
+                item.append($("<br>"));
+                item.append($("<img>").attr({ src: "multimedia/" + hito.fotos[0], alt: `Foto de ${hito.nombre}`, width: "250" }));
+            }
+            listaHitos.append(item);
         });
-        return lista;
+        articulo.append(listaHitos);
+
+        // Contenedor del Mapa (Obligatorio un ID único para Leaflet)
+        articulo.append($("<h4>").text(`Planimetría (${ruta.kml})`));
+        const idMapa = `mapa-leaflet-${ruta.id}`;
+        const divMapa = $("<div>").attr("id", idMapa).css({ width: "100%", height: "450px", marginBottom: "20px", zIndex: 1 });
+        articulo.append(divMapa);
+
+        // Contenedor del SVG
+        articulo.append($("<h4>").text(`Altimetría (${ruta.svg})`));
+        const divSvg = $("<div>").attr("id", `svg-${ruta.id}`);
+        articulo.append(divSvg);
+
+        this.contenedor.append(articulo);
+        this.contenedor.append($("<hr>"));
+
+        // Retrasamos la carga del mapa un milisegundo para asegurar que el DOM ha pintado el <div>
+        setTimeout(() => {
+            this.renderizarMapaLeafletYKml(ruta, idMapa);
+            this.cargarSvg(ruta.svg, divSvg);
+        }, 100);
     }
 
-    crearHitos(ruta) {
-        const lista = $("<ol></ol>");
-        ruta.find("hito").each((indice, nodo) => {
-            const hito = $(nodo);
-            const item = $("<li></li>");
-            item.append($("<strong></strong>").text(hito.children("nombreHito").text()));
-            item.append(document.createTextNode(`: ${hito.children("descripcionHito").text()} Distancia desde el hito anterior: ${hito.children("distanciaAnterior").text()} ${hito.children("distanciaAnterior").attr("unidades")}.`));
-            const foto = hito.find("galeriaFotos foto").first().text();
-            item.append($("<figure></figure>").append($("<img />").attr({
-                src: `multimedia/${foto}`,
-                alt: `Fotografía de ${hito.children("nombreHito").text()}`
-            })));
-            lista.append(item);
+    renderizarMapaLeafletYKml(ruta, idContenedor) {
+        // 1. Inicializar el mapa centrado en el inicio de la ruta
+        const mapa = L.map(idContenedor).setView([ruta.inicio.lat, ruta.inicio.lng], 14);
+
+        // 2. Cargar las teselas gratuitas de OpenStreetMap
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(mapa);
+
+        // 3. Colocar chincheta en el inicio
+        L.marker([ruta.inicio.lat, ruta.inicio.lng]).addTo(mapa)
+            .bindPopup(`<b>Inicio:</b> ${ruta.nombre}`);
+
+        // 4. Colocar chinchetas en los hitos
+        ruta.hitos.forEach(hito => {
+            if(!isNaN(hito.lat) && !isNaN(hito.lng)) {
+                L.marker([hito.lat, hito.lng]).addTo(mapa)
+                    .bindPopup(hito.nombre);
+            }
         });
-        return lista;
-    }
 
-    cargarSvg(articulo, archivo, indice) {
+        // 5. Cargar el KML real usando jQuery y pintar la ruta
         $.ajax({
-            url: `xml/${archivo}`,
-            dataType: "xml"
-        }).done((svg) => {
-            const nodo = $(svg.documentElement).attr("aria-label", `Altimetría de la ruta ${indice + 1}`);
-            articulo.append(nodo);
-        }).fail(() => articulo.append($("<p></p>").text("No se pudo cargar la altimetría SVG.")));
+            url: `xml/${ruta.kml}`,
+            dataType: "xml",
+            success: (kml) => {
+                let nodosCoords = kml.getElementsByTagNameNS("*", "coordinates");
+                if (nodosCoords.length === 0) {
+                    nodosCoords = kml.getElementsByTagName("coordinates");
+                }
+
+                if (nodosCoords.length > 0) {
+                    const textoCoords = nodosCoords[0].textContent.trim();
+                    const coordsKml = textoCoords.split(/\s+/);
+                    const trazado = [];
+
+                    coordsKml.forEach(par => {
+                        const partes = par.split(",");
+                        if(partes.length >= 2) {
+                            // KML guarda como [Longitud, Latitud]. Leaflet necesita [Latitud, Longitud]
+                            trazado.push([parseFloat(partes[1]), parseFloat(partes[0])]);
+                        }
+                    });
+
+
+
+                    // Auto-ajustar el zoom para que la ruta completa encaje en la pantalla
+                    // Dibujar la línea sobre el mapa
+                    const linea = L.polyline(trazado, {color: '#d60000', weight: 5, opacity: 0.8}).addTo(mapa);
+
+                    // Auto-ajustar el zoom SOLO si hay trazado
+                    if (trazado.length > 0) {
+                        mapa.fitBounds(linea.getBounds());
+                    }
+                }
+            },
+            error: () => console.error(`Error de red al cargar xml/${ruta.kml}`)
+        });
+    }
+
+    cargarSvg(archivoSvg, divContenedor) {
+        $.ajax({
+            url: `xml/${archivoSvg}`,
+            dataType: "text",
+            success: (svgXml) => divContenedor.html(svgXml),
+            error: () => divContenedor.html("<p>No se encontró el archivo de altimetría.</p>")
+        });
     }
 }
 
-$(function () {
-    new RutasTuristicas($("main section").first()).cargar();
+// Inicialización de la clase cuando el DOM está listo
+$(() => {
+    new GestorRutasTuristicas().iniciar();
 });
