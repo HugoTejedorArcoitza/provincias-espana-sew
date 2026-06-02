@@ -13,13 +13,13 @@ header {
 
 /* Especificidad: (0,0,3) */
 header h1 a {
-    color: #ffffff; /* Contraste AAA con el fondo #004f59 definido en header. */
+    color: #ffffff;
     text-decoration: none;
 }
 
 /* Especificidad: (0,0,2) */
 nav a {
-    color: #ffffff; /* Contraste AAA con el fondo #004f59 definido en header. */
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -31,13 +31,13 @@ nav a.activo {
 
 /* Especificidad: (0,0,2) */
 body > p {
-    color: #5b6670; /* Contraste AAA con el fondo #f7f3ed definido en body. */
+    color: #5b6670;
     font-size: 0.9em;
 }
 
 /* Especificidad: (0,0,3) */
 body > p a {
-    color: #005a8d; /* Contraste AAA con el fondo #f7f3ed definido en body. */
+    color: #005a8d;
 }
 
 /* Especificidad: (0,0,1) */
@@ -48,22 +48,22 @@ main {
 
 /* Especificidad: (0,0,1) */
 h2 {
-    color: #004f59; /* Contraste AAA con el fondo #ffffff definido en main. */
+    color: #004f59;
 }
 
 /* Especificidad: (0,0,1) */
 h3 {
-    color: #7a3b00; /* Contraste AAA con el fondo #ffffff definido en main. */
+    color: #7a3b00;
 }
 
 /* Especificidad: (0,0,1) */
 h4 {
-    color: #004f59; /* Contraste AAA con el fondo #ffffff definido en main. */
+    color: #004f59;
 }
 
 /* Especificidad: (0,0,1) */
 a {
-    color: #005a8d; /* Contraste AAA con los fondos claros definidos en body y main. */
+    color: #005a8d;
 }
 
 /* Especificidad: (0,0,1) */
@@ -96,15 +96,11 @@ caption {
 th {
     background-color: #004f59;
     color: #ffffff;
-}
-
-/* Especificidad: (0,0,1) */
-td {
     border: 0.08em solid #8a949c;
 }
 
 /* Especificidad: (0,0,1) */
-th {
+td {
     border: 0.08em solid #8a949c;
 }
 
@@ -133,7 +129,7 @@ fieldset {
 /* Especificidad: (0,0,1) */
 legend {
     font-weight: bold;
-    color: #004f59; /* Contraste AAA con el fondo #ffffff definido en main. */
+    color: #004f59;
 }
 
 /* Especificidad: (0,0,1) */
@@ -142,26 +138,38 @@ footer {
     color: #ffffff;
 }
 
+/* --- COLORES DE MAPAS Y SVGs --- */
+/* Especificidad: (0,0,3) */
+article figure:nth-of-type(1) {
+    border: 0.12em solid #8a949c;
+}
+
+/* Especificidad: (0,0,3) */
+article figure:nth-of-type(2) {
+    border: 0.12em solid #8a949c;
+    background-color: #eef6f4;
+}
+
+/* --- RESTO DE REGLAS DE CONTENIDO --- */
 /* Especificidad: (0,0,2) */
-article div {
+article > div {
     background-color: #e6eef1;
     color: #1f2933;
     border: 0.08em solid #8a949c;
 }
 
 /* Especificidad: (0,0,3) */
-article div img {
+article > div img {
     border: 0;
 }
 
 /* Especificidad: (0,0,3) */
-article div svg {
-    background-color: rgba(255, 255, 255, 0.82); /* Se omite la propiedad 'color' al declarar 'background-color' porque
-    este elemento es un SVG puramente gráfico sin texto */
+article > div svg {
+    background-color: rgba(255, 255, 255, 0.82);
 }
 
 /* Especificidad: (0,0,3) */
-article div p {
+article > div p {
     background-color: #ffffff;
     color: #1f2933;
 }
@@ -212,5 +220,5 @@ article > p {
 
 /* Especificidad: (0,0,1) */
 strong {
-    color: #202124; /* Contraste AAA con el fondo #ffffff definido en main. */
+    color: #202124;
 }
