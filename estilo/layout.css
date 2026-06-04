@@ -50,25 +50,20 @@ section {
     margin-bottom: 2rem;
 }
 
+/* CORRECCIÓN: Unificadas las reglas duplicadas de article en una sola declaración */
 /* Especificidad: (0,0,1) */
-article {
-    border-bottom: 0.1em solid #ccc;
-    padding-bottom: 2em;
-    margin-bottom: 2em;
-}
-/* Especificidad 002: Sustituye el width="250" del JS */
-article li img {
-    display: block;
-    width: 15em; /* Medida relativa, prohibido usar px */
-    height: auto;
-    margin: 0.5em 0;
-}
-
-/* Especificidad 001: Sustituye el <hr> eliminado del JS */
 article {
     border-bottom: 0.1em solid #222222d8;
     padding-bottom: 2em;
     margin-bottom: 2em;
+}
+
+/* Especificidad 003 */
+article li img {
+    display: block;
+    width: 15em;
+    height: auto;
+    margin: 0.5em 0;
 }
 
 /* Especificidad: (0,0,1) */
@@ -152,15 +147,18 @@ footer {
 
 /* --- REGLAS DE MAPAS Y SVGs --- */
 
-/* Especificidad: (0,0,4) - Dimensiones del contenedor del mapa (Sustituye el inline style) */
+/* CORRECCIÓN: Se unificó la regla del div del mapa y se justificó el uso de !important */
+/* Especificidad (0,0,4): Contenedor interactivo hijo directo de la figura */
 article figure:nth-of-type(1) > div {
     height: 25rem;
     width: 100%;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
+    /* JUSTIFICACIÓN: Se fuerza 'block' para anular e inmunizar el lienzo del mapa de las reglas flex/grid del nodo padre */
+    display: block !important;
 }
 
-/* Especificidad: (0,0,4) - Protege las imágenes internas de Google Maps de deformaciones por 'figure img' */
+/* Especificidad: (0,0,4) */
 article figure:nth-of-type(1) > div img {
     max-width: none;
     max-height: none;
@@ -170,22 +168,12 @@ article figure:nth-of-type(1) > div img {
     border: none;
 }
 
-/* --- CONTENEDOR DEL MAPA (Semántico) --- */
-/* Especificidad (0,0,3): Asegura altura y protege del flex padre */
+/* Especificidad (0,0,3) */
 article figure:nth-of-type(1) {
     width: 75%;
     margin: 1em auto;
     padding: 0;
     border: 0.12em solid #8a949c;
-}
-
-/* Especificidad (0,0,4): El mapa es un hijo directo del figure */
-article figure:nth-of-type(1) > div {
-    height: 25rem;
-    width: 100%;
-    display: block !important; /* Corta la herencia de flex/grid */
-    position: relative;
-    overflow: hidden;
 }
 
 /* --- CONTENEDOR DEL SVG --- */
@@ -197,15 +185,7 @@ article figure:nth-of-type(2) {
     overflow-x: auto;
 }
 
-/* Especificidad (0,1,3) */
-article figure:nth-of-type(2) svg {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-
-
+/* CORRECCIÓN: Se eliminó la declaración duplicada exacta del SVG */
 /* Especificidad: (0,1,3) */
 article figure:nth-of-type(2) svg {
     width: 100%;
@@ -214,7 +194,7 @@ article figure:nth-of-type(2) svg {
     overflow: visible;
 }
 
-/* --- HIJOS DIRECTOS (Protege a los mapas de romperse) --- */
+/* --- HIJOS DIRECTOS --- */
 
 /* Especificidad: (0,0,2) */
 article > div {
