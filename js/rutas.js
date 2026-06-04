@@ -4,6 +4,7 @@ class GestorRutasTuristicas {
     constructor() {
         this.rutas = [];
         this.contenedor = $("main section").first();
+        this.mapasPendientes = []; // Guarda info para cuando cargue Google Maps
     }
 
     iniciar() {
@@ -20,8 +21,9 @@ class GestorRutasTuristicas {
     }
 
     procesarXML(xml) {
-        this.contenedor.empty();
 
+        this.contenedor.find("article").remove();
+        this.contenedor.find("p:contains('Cargando')").remove();
         $(xml).find("ruta").each((indice, nodo) => {
             const rutaXML = $(nodo);
             const ruta = {
@@ -58,101 +60,182 @@ class GestorRutasTuristicas {
             this.rutas.push(ruta);
             this.construirArticulo(ruta);
         });
+
+        // Una vez procesadas las rutas y creados los contenedores, cargamos la API
+        this.cargarGoogleMapsAPI();
     }
 
     construirArticulo(ruta) {
-        const articulo = $("<article>");
-        articulo.append($("<h3>").text(ruta.nombre));
-        articulo.append($("<p>").text(ruta.descripcion));
+    const articulo = $("<article>");
+    articulo.append($("<h3>").text(ruta.nombre));
+    articulo.append($("<p>").text(ruta.descripcion));
 
-        const lista = $("<ul>");
-        lista.append($("<li>").text(`Tipo de ruta: ${ruta.tipo}`));
-        lista.append($("<li>").text(`Transporte: ${ruta.medio}`));
-        lista.append($("<li>").text(`Duración: ${ruta.duracion}`));
-        articulo.append(lista);
+    const lista = $("<ul>");
+    lista.append($("<li>").text(`Tipo de ruta: ${ruta.tipo}`));
+    lista.append($("<li>").text(`Transporte: ${ruta.medio}`));
+    lista.append($("<li>").text(`Duración: ${ruta.duracion}`));
+    articulo.append(lista);
 
-        articulo.append($("<h4>").text("Puntos de interés (Hitos)"));
-        const listaHitos = $("<ol>");
-        ruta.hitos.forEach(hito => {
-            const item = $("<li>").html(`<strong>${hito.nombre}</strong>: ${hito.descripcion}. <em>(Distancia: ${hito.distancia})</em>`);
-            if(hito.fotos.length > 0) {
-                item.append($("<br>"));
-                item.append($("<img>").attr({ src: "multimedia/" + hito.fotos[0], alt: `Foto de ${hito.nombre}`, width: "250" }));
+    articulo.append($("<h4>").text("Puntos de interés (Hitos)"));
+    const listaHitos = $("<ol>");
+    ruta.hitos.forEach(hito => {
+        const item = $("<li>").html(`<strong>${hito.nombre}</strong>: ${hito.descripcion}. <em>(Distancia: ${hito.distancia})</em>`);
+        if(hito.fotos.length > 0) {
+            item.append($("<br>"));
+            // ELIMINADO width: "250". Se controlará mediante CSS.
+            item.append($("<img>").attr({ src: "multimedia/" + hito.fotos[0], alt: `Foto de ${hito.nombre}` }));
+        }
+        listaHitos.append(item);
+    });
+    articulo.append(listaHitos);
+
+    articulo.append($("<h4>").text(`Planimetría (${ruta.kml})`));
+    const contenedorFiguraMapa = $("<figure>");
+    const contenedorMapa = $("<div>").attr({ role: "application", 'aria-label': `Mapa de la ruta ${ruta.nombre}` });
+    contenedorFiguraMapa.append(contenedorMapa);
+    articulo.append(contenedorFiguraMapa);
+
+    articulo.append($("<h4>").text(`Altimetría (${ruta.svg})`));
+    const contenedorSvg = $("<figure>");
+    articulo.append(contenedorSvg);
+
+    this.contenedor.append(articulo);
+    // ELIMINADO: this.contenedor.append($("<hr>")); -> Se gestiona vía CSS en article
+    
+    this.mapasPendientes.push({ ruta: ruta, nodo: contenedorMapa[0] });
+    this.cargarSvg(ruta.svg, contenedorSvg);
+}
+
+    cargarGoogleMapsAPI() {
+        // Callback global
+        window.initGoogleMaps = () => {
+            this.renderizarMapasPendientes();
+        };
+
+        // Evitamos recargar la API si ya existe
+        if (window.google && window.google.maps) {
+            // Si ya está cargada, llamamos directamente al callback
+            if (typeof window.initGoogleMaps === 'function') {
+                window.initGoogleMaps();
+            } else {
+                this.renderizarMapasPendientes();
             }
-            listaHitos.append(item);
-        });
-        articulo.append(listaHitos);
+            return;
+        }
 
-        // CREACIÓN ESTRUCTURAL PURA (SIN CSS NI ATRIBUTOS ILEGALES)
-        articulo.append($("<h4>").text(`Planimetría (${ruta.kml})`));
-        const contenedorMapa = $("<figure>");
-        articulo.append(contenedorMapa);
+        const script = document.createElement('script');
+        // La clave puede proporcionarse desde la página principal como window.GOOGLE_MAPS_API_KEY
+        const apiKey = window.GOOGLE_MAPS_API_KEY || 'AIzaSyAHT7iPZAtmwMJrAFCf4ljOPPTqGosKZgU';
 
-        articulo.append($("<h4>").text(`Altimetría (${ruta.svg})`));
-        const contenedorSvg = $("<figure>");
-        articulo.append(contenedorSvg);
-
-        this.contenedor.append(articulo);
-        this.contenedor.append($("<hr>"));
-
-        setTimeout(() => {
-            this.renderizarMapaLeafletYKml(ruta, contenedorMapa[0]);
-            this.cargarSvg(ruta.svg, contenedorSvg);
-        }, 100);
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&callback=initGoogleMaps`;
+        script.async = true;
+        script.defer = true;
+        // Añadimos manejo de error de carga
+        script.onerror = () => console.error('No se pudo cargar la librería de Google Maps. Compruebe la clave API y la conectividad.');
+        document.head.appendChild(script);
     }
 
-   renderizarMapaLeafletYKml(ruta, nodoDOMMapa) {
-           // 1. Forzamos un tamaño mínimo al nodo antes de que Leaflet lo toque
-           nodoDOMMapa.style.height = "25em";
+    renderizarMapasPendientes() {
+        this.mapasPendientes.forEach(item => {
+            this.renderizarMapaGoogle(item.ruta, item.nodo);
+        });
+        // Limpiamos la lista
+        this.mapasPendientes = [];
+    }
 
-           // 2. Inicializar mapa
-           const mapa = L.map(nodoDOMMapa, {
-               scrollWheelZoom: false
-           }).setView([ruta.inicio.lat, ruta.inicio.lng], 14);
+    renderizarMapaGoogle(ruta, nodoDOMMapa) {
+        // Esperamos a que el nodo esté visible y tenga tamaño para evitar fragmentación visual
+        const waitForVisible = (node, timeout = 3000) => new Promise((resolve) => {
+            const start = performance.now();
+            const check = () => {
+                const el = node;
+                const rect = el.getBoundingClientRect ? el.getBoundingClientRect() : { width: el.offsetWidth, height: el.offsetHeight };
+                const visible = (rect.width > 0 && rect.height > 0) && document.body.contains(el);
+                if (visible) return resolve(true);
+                if (performance.now() - start > timeout) return resolve(false);
+                requestAnimationFrame(check);
+            };
+            check();
+        });
 
-           L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-               maxZoom: 19,
-               attribution: '&copy; OpenStreetMap contributors'
-           }).addTo(mapa);
+        (async () => {
+            const ok = await waitForVisible(nodoDOMMapa, 3000);
+            if (!ok) {
+                console.warn('Contenedor del mapa no es visible o no tiene tamaño. Intentando crear mapa de todas formas.');
+            }
 
-           L.marker([ruta.inicio.lat, ruta.inicio.lng]).addTo(mapa)
-               .bindPopup(`<b>Inicio:</b> ${ruta.nombre}`);
+            // Inicializar mapa de Google
+            const centro = { lat: ruta.inicio.lat, lng: ruta.inicio.lng };
+            const mapa = new google.maps.Map(nodoDOMMapa, {
+                zoom: 14,
+                center: centro,
+                mapTypeId: 'terrain'
+            });
 
-           ruta.hitos.forEach(hito => {
-               if(!isNaN(hito.lat) && !isNaN(hito.lng)) {
-                   L.marker([hito.lat, hito.lng]).addTo(mapa)
-                       .bindPopup(hito.nombre);
-               }
-           });
+            // Marcador de inicio
+            new google.maps.Marker({
+                position: centro,
+                map: mapa,
+                title: `Inicio: ${ruta.nombre}`
+            });
 
-           // 3. Cargar KML (igual que antes)
-           $.ajax({
-               url: `xml/${ruta.kml}`,
-               dataType: "xml",
-               success: (kml) => {
-                   let nodosCoords = kml.getElementsByTagNameNS("*", "coordinates");
-                   if (nodosCoords.length === 0) nodosCoords = kml.getElementsByTagName("coordinates");
+            // Marcadores de hitos
+            ruta.hitos.forEach(hito => {
+                if(!isNaN(hito.lat) && !isNaN(hito.lng)) {
+                    new google.maps.Marker({
+                        position: { lat: hito.lat, lng: hito.lng },
+                        map: mapa,
+                        title: hito.nombre
+                    });
+                }
+            });
 
-                   if (nodosCoords.length > 0) {
-                       const textoCoords = nodosCoords[0].textContent.trim();
-                       const coordsKml = textoCoords.split(/\s+/);
-                       const trazado = [];
-                       coordsKml.forEach(par => {
-                           const partes = par.split(",");
-                           if(partes.length >= 2) trazado.push([parseFloat(partes[1]), parseFloat(partes[0])]);
-                       });
+            // Cargar KML trazado (buscamos coordinates dentro del KML local)
+            $.ajax({
+                url: `xml/${ruta.kml}`,
+                dataType: "xml",
+                success: (kml) => {
+                    let nodosCoords = kml.getElementsByTagNameNS("*", "coordinates");
+                    if (nodosCoords.length === 0) nodosCoords = kml.getElementsByTagName("coordinates");
 
-                       const linea = L.polyline(trazado, {color: '#d60000', weight: 5, opacity: 0.8}).addTo(mapa);
+                    if (nodosCoords.length > 0) {
+                        const textoCoords = nodosCoords[0].textContent.trim();
+                        const coordsKml = textoCoords.split(/\s+/);
+                        const trazado = [];
+                        const bounds = new google.maps.LatLngBounds();
 
-                       // 4. El truco de magia: InvalidateSize para que el mapa "se dé cuenta" de su espacio
-                       setTimeout(() => {
-                           mapa.invalidateSize();
-                           if (trazado.length > 0) mapa.fitBounds(linea.getBounds());
-                       }, 500);
-                   }
-               }
-           });
-       }
+                        coordsKml.forEach(par => {
+                            const partes = par.split(",");
+                            if(partes.length >= 2) {
+                                const p = { lat: parseFloat(partes[1]), lng: parseFloat(partes[0]) };
+                                trazado.push(p);
+                                bounds.extend(p);
+                            }
+                        });
+
+                        const linea = new google.maps.Polyline({
+                            path: trazado,
+                            geodesic: true,
+                            strokeColor: '#d60000',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 5
+                        });
+
+                        linea.setMap(mapa);
+                        mapa.fitBounds(bounds);
+
+                        // Trigger resize inmeditamente tras ajustar bounds para evitar teselado
+                        google.maps.event.addListenerOnce(mapa, 'idle', () => {
+                            google.maps.event.trigger(mapa, 'resize');
+                            // centrar de nuevo para evitar desplazamientos
+                            if (trazado.length > 0) mapa.setCenter(trazado[0]);
+                        });
+                    }
+                },
+                error: () => console.warn(`No se pudo cargar KML: xml/${ruta.kml}`)
+            });
+        })();
+    }
 
     cargarSvg(archivoSvg, contenedorJQuerySvg) {
         $.ajax({

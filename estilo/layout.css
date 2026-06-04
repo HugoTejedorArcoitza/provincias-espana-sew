@@ -9,21 +9,21 @@ header {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 1em;
+    gap: 1rem;
     padding: 1em 5vw;
 }
 
 /* Especificidad: (0,0,2) */
 header h1 {
     margin: 0;
-    font-size: 1.8em;
+    font-size: 1.8rem;
 }
 
 /* Especificidad: (0,0,1) */
 nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75em;
+    gap: 0.75rem;
 }
 
 /* Especificidad: (0,0,2) */
@@ -34,31 +34,47 @@ nav a {
 /* Especificidad: (0,0,2) */
 body > p {
     margin: 1em auto 0;
-    max-width: 72em;
+    max-width: 72rem;
     padding: 0 5vw;
 }
 
 /* Especificidad: (0,0,1) */
 main {
-    max-width: 72em;
+    max-width: 72rem;
     margin: 1em auto;
     padding: 1.5em 5vw;
 }
 
 /* Especificidad: (0,0,1) */
 section {
-    margin-bottom: 2em;
+    margin-bottom: 2rem;
 }
 
 /* Especificidad: (0,0,1) */
 article {
-    margin: 1.4em 0;
+    border-bottom: 0.1em solid #ccc;
+    padding-bottom: 2em;
+    margin-bottom: 2em;
+}
+/* Especificidad 002: Sustituye el width="250" del JS */
+article li img {
+    display: block;
+    width: 15em; /* Medida relativa, prohibido usar px */
+    height: auto;
+    margin: 0.5em 0;
+}
+
+/* Especificidad 001: Sustituye el <hr> eliminado del JS */
+article {
+    border-bottom: 0.1em solid #222222d8;
+    padding-bottom: 2em;
+    margin-bottom: 2em;
 }
 
 /* Especificidad: (0,0,1) */
 figure {
     margin: 1em 0;
-    padding: 1em;
+    padding: 1rem;
 }
 
 /* Especificidad: (0,0,2) */
@@ -71,14 +87,14 @@ figure img {
 
 /* Especificidad: (0,0,1) */
 figcaption {
-    margin-top: 0.6em;
+    margin-top: 0.6rem;
 }
 
 /* Especificidad: (0,0,1) */
 button {
-    min-width: 8em;
+    min-width: 8rem;
     margin: 0.4em 0.4em 0.4em 0;
-    padding: 0.65em 1em;
+    padding: 0.65em 1rem;
 }
 
 /* Especificidad: (0,0,1) */
@@ -89,37 +105,37 @@ table {
 
 /* Especificidad: (0,0,1) */
 caption {
-    padding: 0.6em;
+    padding: 0.6rem;
 }
 
 /* Especificidad: (0,0,1) */
 th {
-    padding: 0.65em;
+    padding: 0.65rem;
 }
 
 /* Especificidad: (0,0,1) */
 td {
-    padding: 0.65em;
+    padding: 0.65rem;
 }
 
 /* Especificidad: (0,0,1) */
 video {
     display: block;
     width: 100%;
-    max-width: 48em;
+    max-width: 48rem;
     height: auto;
 }
 
 /* Especificidad: (0,0,1) */
 form {
     display: grid;
-    gap: 1em;
+    gap: 1rem;
 }
 
 /* Especificidad: (0,0,1) */
 fieldset {
     margin: 0;
-    padding: 1em;
+    padding: 1rem;
 }
 
 /* Especificidad: (0,0,1) */
@@ -136,8 +152,16 @@ footer {
 
 /* --- REGLAS DE MAPAS Y SVGs --- */
 
-/* Especificidad: (0,0,3) - Protege las imágenes internas de Leaflet de deformaciones */
-article figure:nth-of-type(1) img {
+/* Especificidad: (0,0,4) - Dimensiones del contenedor del mapa (Sustituye el inline style) */
+article figure:nth-of-type(1) > div {
+    height: 25rem;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Especificidad: (0,0,4) - Protege las imágenes internas de Google Maps de deformaciones por 'figure img' */
+article figure:nth-of-type(1) > div img {
     max-width: none;
     max-height: none;
     display: inline;
@@ -146,13 +170,41 @@ article figure:nth-of-type(1) img {
     border: none;
 }
 
-/* Especificidad: (0,0,3) - Apunta solo al SEGUNDO figure (El SVG de Altimetría) */
+/* --- CONTENEDOR DEL MAPA (Semántico) --- */
+/* Especificidad (0,0,3): Asegura altura y protege del flex padre */
+article figure:nth-of-type(1) {
+    width: 75%;
+    margin: 1em auto;
+    padding: 0;
+    border: 0.12em solid #8a949c;
+}
+
+/* Especificidad (0,0,4): El mapa es un hijo directo del figure */
+article figure:nth-of-type(1) > div {
+    height: 25rem;
+    width: 100%;
+    display: block !important; /* Corta la herencia de flex/grid */
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- CONTENEDOR DEL SVG --- */
+/* Especificidad (0,0,3) */
 article figure:nth-of-type(2) {
     width: 75%;
     margin: 1em auto 3em auto;
-    padding: 1em;
+    padding: 1rem;
     overflow-x: auto;
 }
+
+/* Especificidad (0,1,3) */
+article figure:nth-of-type(2) svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
 
 /* Especificidad: (0,1,3) */
 article figure:nth-of-type(2) svg {
@@ -170,7 +222,7 @@ article > div {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     overflow: hidden;
-    min-height: 22em;
+    min-height: 22rem;
     margin: 1em 0;
 }
 
@@ -191,17 +243,17 @@ article > div svg {
 /* Especificidad: (0,0,3) */
 article > div p {
     position: absolute;
-    left: 1em;
-    bottom: 1em;
+    left: 1rem;
+    bottom: 1rem;
     margin: 0;
-    padding: 0.5em;
+    padding: 0.5rem;
 }
 
 /* Especificidad: (0,0,3) */
 section article svg {
     display: block;
     width: 100%;
-    max-width: 56em;
+    max-width: 56rem;
     height: auto;
     margin: 1em 0;
 }
@@ -209,7 +261,7 @@ section article svg {
 /* Especificidad: (0,0,1) */
 output {
     display: block;
-    padding: 1em;
+    padding: 1rem;
 }
 
 /* Especificidad: (0,0,2) */
@@ -219,19 +271,19 @@ section article {
 
 /* Especificidad: (0,0,1) */
 ol {
-    padding-left: 1.5em;
+    padding-left: 1.5rem;
 }
 
 /* Especificidad: (0,0,1) */
 ul {
-    padding-left: 1.5em;
+    padding-left: 1.5rem;
 }
 
 /* Especificidad: (0,0,1) */
 dl {
     display: grid;
     grid-template-columns: 12em 1fr;
-    gap: 0.5em 1em;
+    gap: 0.5em 1rem;
 }
 
 /* Especificidad: (0,0,1) */
