@@ -154,8 +154,8 @@ article figure:nth-of-type(1) > div {
     width: 100%;
     position: relative;
     overflow: hidden;
-    /* JUSTIFICACIÓN: Se fuerza 'block' para anular e inmunizar el lienzo del mapa de las reglas flex/grid del nodo padre */
-    display: block !important;
+    /* El div ya es de bloque por defecto; se mantiene así para evitar advertencias de W3C sin usar !important. */
+    display: block;
 }
 
 /* Especificidad: (0,0,4) */
@@ -291,11 +291,13 @@ dd {
 
     /* Especificidad: (0,0,1) */
     dl {
+        /* Redefinición necesaria por la media query de tableta. */
         grid-template-columns: 1fr;
     }
 
     /* Especificidad: (0,0,2) */
     article > div {
+        /* Redefinición necesaria por la media query de tableta. */
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -309,6 +311,7 @@ dd {
 
     /* Especificidad: (0,0,2) */
     article > div {
+        /* Redefinición necesaria por la media query de móvil. */
         grid-template-columns: 1fr;
     }
 
