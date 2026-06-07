@@ -30,7 +30,7 @@ class ConexionReservas
         $this->conexion->exec("CREATE DATABASE IF NOT EXISTS " . self::BASE_DATOS . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         $this->conexion->exec("USE " . self::BASE_DATOS);
 
-        // Crear tablas (puedes cargar tu archivo .sql aquí con file_get_contents si lo prefieres)
+        // Cargamos el esquema canónico desde crear_base_datos.sql (contiene la definición de Cliente y reservas con id_cli)
         $sql = file_get_contents(__DIR__ . '/crear_base_datos.sql');
         if ($sql) {
             $this->conexion->exec($sql);

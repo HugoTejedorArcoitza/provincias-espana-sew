@@ -10,31 +10,40 @@ class RepositorioReservas
         $this->db = $db;
     }
 
-    public function autenticarUsuario(string $correo, string $contrasena): ?array
-    {
-        $consulta = $this->db->prepare('SELECT id_usuario, nombre, contrasena FROM usuarios WHERE correo = ?');
-        $consulta->execute([$correo]);
-        $usuario = $consulta->fetch();
-        if (!$usuario) {
-            return null;
-        }
-
-        if (!password_verify($contrasena, $usuario['contrasena'])) {
-            return null;
-        }
-
-        unset($usuario['contrasena']);
-        return $usuario;
-    }
-
-    public function registrarUsuario(string $nombre, string $correo, string $contrasena): bool
+    public function autenticarUsuario(string $correo, string $claveCli): ?array
     {
         try {
-            $hashContrasena = password_hash($contrasena, PASSWORD_DEFAULT);
-            $consulta = $this->db->prepare('INSERT INTO usuarios(nombre, correo, contrasena) VALUES(?, ?, ?)');
+            $consulta = $this->db->prepare('SELECT * FROM Cliente WHERE email_cli = ? LIMIT 1');
+            $consulta->execute([$correo]);
+            $usuario = $consulta->fetch();
+
+            if (!$usuario) {
+                return null;
+            }
+
+            if (!isset($usuario['clave_cli']) || !password_verify($claveCli, $usuario['clave_cli'])) {
+                return null;
+            }
+
+            return [
+                // Mantenemos `id_usuario` en retorno para no romper la sesion del controlador.
+                'id_usuario' => (int)$usuario['id_cli'],
+                'nombre' => (string)($usuario['nombre_cli'] ?? $usuario['nombre'] ?? ''),
+                'email_cli' => (string)$usuario['email_cli']
+            ];
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+
+    public function registrarUsuario(string $nombre, string $correo, string $claveCli): bool
+    {
+        try {
+            $hashContrasena = password_hash($claveCli, PASSWORD_DEFAULT);
+            $consulta = $this->db->prepare('INSERT INTO Cliente(nombre_cli, email_cli, clave_cli) VALUES(?, ?, ?)');
             return $consulta->execute([$nombre, $correo, $hashContrasena]);
         } catch (PDOException $e) {
-            return false; // Posible correo duplicado
+            return false;
         }
     }
 
@@ -46,19 +55,42 @@ class RepositorioReservas
         return $this->db->query($sql)->fetchAll();
     }
 
-    public function crearReserva(int $idUsuario, int $idRecurso, int $plazas): bool
+    public function crearReserva(int $idUsuario, int $idRecurso, int $plazas): array
     {
-        $consultaRecurso = $this->db->prepare('SELECT plazas, precio FROM recursos WHERE id_recurso = ?');
-        $consultaRecurso->execute([$idRecurso]);
-        $recurso = $consultaRecurso->fetch();
+        try {
+            if ($plazas < 1) {
+                return ['ok' => false, 'error' => 'El numero de plazas debe ser mayor que cero.'];
+            }
 
-        if (!$recurso || $recurso['plazas'] < $plazas) {
-            return false; // No hay plazas
+            $consultaRecurso = $this->db->prepare('SELECT plazas, precio FROM recursos WHERE id_recurso = ?');
+            $consultaRecurso->execute([$idRecurso]);
+            $recurso = $consultaRecurso->fetch();
+
+            if (!$recurso) {
+                return ['ok' => false, 'error' => 'El recurso seleccionado no existe.'];
+            }
+
+            $consultaOcupadas = $this->db->prepare('SELECT COALESCE(SUM(plazas), 0) AS ocupadas FROM reservas WHERE id_recurso = ? AND id_estado = 1');
+            $consultaOcupadas->execute([$idRecurso]);
+            $ocupadas = (int)($consultaOcupadas->fetch()['ocupadas'] ?? 0);
+            $disponibles = (int)$recurso['plazas'] - $ocupadas;
+
+            if ($disponibles < $plazas) {
+                return ['ok' => false, 'error' => 'No hay plazas suficientes. Disponibles: ' . max(0, $disponibles) . '.'];
+            }
+
+            $presupuesto = $plazas * (float)$recurso['precio'];
+            $consulta = $this->db->prepare('INSERT INTO reservas(id_cli, id_recurso, id_estado, plazas, presupuesto) VALUES(?, ?, 1, ?, ?)');
+            $ok = $consulta->execute([$idUsuario, $idRecurso, $plazas, $presupuesto]);
+
+            if (!$ok) {
+                return ['ok' => false, 'error' => 'No se pudo guardar la reserva.'];
+            }
+
+            return ['ok' => true, 'error' => ''];
+        } catch (PDOException $e) {
+            return ['ok' => false, 'error' => 'Error de base de datos: ' . $e->getMessage()];
         }
-
-        $presupuesto = $plazas * (float)$recurso['precio'];
-        $consulta = $this->db->prepare('INSERT INTO reservas(id_usuario, id_recurso, id_estado, plazas, presupuesto) VALUES(?, ?, 1, ?, ?)');
-        return $consulta->execute([$idUsuario, $idRecurso, $plazas, $presupuesto]);
     }
 
     public function obtenerReservasUsuario(int $idUsuario): array
@@ -67,7 +99,7 @@ class RepositorioReservas
                 FROM reservas re
                 INNER JOIN recursos r ON re.id_recurso = r.id_recurso
                 INNER JOIN estados_reserva e ON re.id_estado = e.id_estado
-                WHERE re.id_usuario = ?
+                WHERE re.id_cli = ?
                 ORDER BY re.fecha_reserva DESC';
         $consulta = $this->db->prepare($sql);
         $consulta->execute([$idUsuario]);
@@ -76,7 +108,7 @@ class RepositorioReservas
 
     public function anularReserva(int $idReserva, int $idUsuario): bool
     {
-        $sql = 'UPDATE reservas SET id_estado = 2 WHERE id_reserva = ? AND id_usuario = ?';
+        $sql = 'UPDATE reservas SET id_estado = 2 WHERE id_reserva = ? AND id_cli = ?';
         $consulta = $this->db->prepare($sql);
         return $consulta->execute([$idReserva, $idUsuario]);
     }

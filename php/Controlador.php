@@ -37,14 +37,18 @@ class Controlador
             $accion = $_POST['accion'] ?? '';
 
             if ($accion === 'registro') {
-                $contrasena = $this->obtenerContrasena('contrasena');
-                $exito = $this->repositorio->registrarUsuario($this->limpiar($_POST['nombre']), $this->limpiar($_POST['correo']), $contrasena);
-                $_SESSION['mensaje'] = $exito ? 'Usuario registrado. Ya puede iniciar sesión.' : 'Error: El correo ya está registrado.';
+                $claveCli = $this->obtenerClaveCli();
+                $exito = $this->repositorio->registrarUsuario(
+                    $this->limpiar((string)($_POST['nombre'] ?? '')),
+                    $this->obtenerCorreo(),
+                    $claveCli
+                );
+                $_SESSION['mensaje'] = $exito ? 'Usuario registrado. Ya puede iniciar sesion.' : 'Error: no se pudo registrar el usuario.';
             }
 
             if ($accion === 'login') {
-                $contrasena = $this->obtenerContrasena('contrasena');
-                $usuario = $this->repositorio->autenticarUsuario($this->limpiar($_POST['correo']), $contrasena);
+                $claveCli = $this->obtenerClaveCli();
+                $usuario = $this->repositorio->autenticarUsuario($this->obtenerCorreo(), $claveCli);
                 if ($usuario) {
                     $_SESSION['usuario_id'] = $usuario['id_usuario'];
                     $_SESSION['usuario_nombre'] = $usuario['nombre'];
@@ -55,8 +59,10 @@ class Controlador
 
             if ($accion === 'reserva' && isset($_SESSION['usuario_id'])) {
                 $plazas = max(1, (int)($_POST['plazas'] ?? 1));
-                $exito = $this->repositorio->crearReserva($_SESSION['usuario_id'], (int)$_POST['recurso'], $plazas);
-                $_SESSION['mensaje'] = $exito ? 'Reserva confirmada con éxito.' : 'Error: No hay plazas suficientes.';
+                $resultado = $this->repositorio->crearReserva($_SESSION['usuario_id'], (int)($_POST['recurso'] ?? 0), $plazas);
+                $_SESSION['mensaje'] = $resultado['ok']
+                    ? 'Reserva confirmada con exito.'
+                    : 'Error al reservar: ' . $resultado['error'];
             }
 
             if ($accion === 'anular' && isset($_SESSION['usuario_id'])) {
@@ -84,9 +90,14 @@ class Controlador
         return htmlspecialchars(trim($dato), ENT_QUOTES, 'UTF-8');
     }
 
-    private function obtenerContrasena(string $campo): string
+    private function obtenerCorreo(): string
     {
-        return (string)($_POST[$campo] ?? '');
+        return $this->limpiar((string)($_POST['correo'] ?? $_POST['email_cli'] ?? ''));
+    }
+
+    private function obtenerClaveCli(): string
+    {
+        return (string)($_POST['clave_cli'] ?? '');
     }
 }
 
