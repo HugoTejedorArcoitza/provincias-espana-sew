@@ -4,7 +4,7 @@ class GestorRutasTuristicas {
     constructor() {
         this.rutas = [];
         this.contenedor = $("main section").first();
-        this.mapasPendientes = []; // Guarda info para cuando cargue Google Maps
+        this.mapasPendientes = [];
     }
 
     iniciar() {
@@ -116,8 +116,7 @@ class GestorRutasTuristicas {
             return;
         }
 
-        // CORRECCIÓN: Se elimina cualquier API Key harcodeada de profesores o personal.
-        // Se lee estrictamente desde el objeto global configurado en el archivo HTML.
+
         const apiKey = window.GOOGLE_MAPS_API_KEY;
         if (!apiKey) {
             console.error('Error crítico: No se detectó ninguna Google Maps API Key en window.GOOGLE_MAPS_API_KEY.');
