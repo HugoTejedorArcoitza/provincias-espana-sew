@@ -44,7 +44,7 @@ $app = Controlador::ejecutar();
                     <form action="reservas.php" method="post">
                         <input type="hidden" name="accion" value="login" />
                         <label>Correo electrónico <input type="email" name="correo" required /></label>
-                        <label>Teléfono (Contraseña) <input type="tel" name="telefono" required /></label>
+                        <label>Contraseña <input type="password" name="contrasena" required minlength="8" /></label>
                         <button type="submit">Entrar</button>
                     </form>
                 </article>
@@ -55,7 +55,7 @@ $app = Controlador::ejecutar();
                         <input type="hidden" name="accion" value="registro" />
                         <label>Nombre <input type="text" name="nombre" required /></label>
                         <label>Correo electrónico <input type="email" name="correo" required /></label>
-                        <label>Teléfono <input type="tel" name="telefono" required /></label>
+                        <label>Contraseña <input type="password" name="contrasena" required minlength="8" /></label>
                         <button type="submit">Registrarse</button>
                     </form>
                 </article>

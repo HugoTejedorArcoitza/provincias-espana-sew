@@ -37,12 +37,14 @@ class Controlador
             $accion = $_POST['accion'] ?? '';
 
             if ($accion === 'registro') {
-                $exito = $this->repositorio->registrarUsuario($this->limpiar($_POST['nombre']), $this->limpiar($_POST['correo']), $this->limpiar($_POST['telefono']));
+                $contrasena = $this->obtenerContrasena('contrasena');
+                $exito = $this->repositorio->registrarUsuario($this->limpiar($_POST['nombre']), $this->limpiar($_POST['correo']), $contrasena);
                 $_SESSION['mensaje'] = $exito ? 'Usuario registrado. Ya puede iniciar sesión.' : 'Error: El correo ya está registrado.';
             }
 
             if ($accion === 'login') {
-                $usuario = $this->repositorio->autenticarUsuario($this->limpiar($_POST['correo']), $this->limpiar($_POST['telefono']));
+                $contrasena = $this->obtenerContrasena('contrasena');
+                $usuario = $this->repositorio->autenticarUsuario($this->limpiar($_POST['correo']), $contrasena);
                 if ($usuario) {
                     $_SESSION['usuario_id'] = $usuario['id_usuario'];
                     $_SESSION['usuario_nombre'] = $usuario['nombre'];
@@ -80,6 +82,11 @@ class Controlador
     private function limpiar(string $dato): string
     {
         return htmlspecialchars(trim($dato), ENT_QUOTES, 'UTF-8');
+    }
+
+    private function obtenerContrasena(string $campo): string
+    {
+        return (string)($_POST[$campo] ?? '');
     }
 }
 

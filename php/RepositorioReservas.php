@@ -10,19 +10,29 @@ class RepositorioReservas
         $this->db = $db;
     }
 
-    public function autenticarUsuario(string $correo, string $telefono): ?array
+    public function autenticarUsuario(string $correo, string $contrasena): ?array
     {
-        $consulta = $this->db->prepare('SELECT id_usuario, nombre FROM usuarios WHERE correo = ? AND telefono = ?');
-        $consulta->execute([$correo, $telefono]);
+        $consulta = $this->db->prepare('SELECT id_usuario, nombre, contrasena FROM usuarios WHERE correo = ?');
+        $consulta->execute([$correo]);
         $usuario = $consulta->fetch();
-        return $usuario ?: null;
+        if (!$usuario) {
+            return null;
+        }
+
+        if (!password_verify($contrasena, $usuario['contrasena'])) {
+            return null;
+        }
+
+        unset($usuario['contrasena']);
+        return $usuario;
     }
 
-    public function registrarUsuario(string $nombre, string $correo, string $telefono): bool
+    public function registrarUsuario(string $nombre, string $correo, string $contrasena): bool
     {
         try {
-            $consulta = $this->db->prepare('INSERT INTO usuarios(nombre, correo, telefono) VALUES(?, ?, ?)');
-            return $consulta->execute([$nombre, $correo, $telefono]);
+            $hashContrasena = password_hash($contrasena, PASSWORD_DEFAULT);
+            $consulta = $this->db->prepare('INSERT INTO usuarios(nombre, correo, contrasena) VALUES(?, ?, ?)');
+            return $consulta->execute([$nombre, $correo, $hashContrasena]);
         } catch (PDOException $e) {
             return false; // Posible correo duplicado
         }
