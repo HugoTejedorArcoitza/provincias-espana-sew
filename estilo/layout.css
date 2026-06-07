@@ -149,6 +149,7 @@ footer {
 
 /* CORRECCIÓN: Se unificó la regla del div del mapa y se justificó el uso de !important */
 /* Especificidad (0,0,4): Contenedor interactivo hijo directo de la figura */
+/* El mapa hereda el color de su contenido interno y el fondo se usa como soporte visual del contenedor. */
 article figure:nth-of-type(1) > div {
     height: 25rem;
     width: 100%;
@@ -159,6 +160,7 @@ article figure:nth-of-type(1) > div {
 }
 
 /* Especificidad: (0,0,4) */
+/* Las imágenes del mapa son recursos gráficos que heredan contraste del contenedor sin color textual propio. */
 article figure:nth-of-type(1) > div img {
     max-width: none;
     max-height: none;
@@ -169,6 +171,7 @@ article figure:nth-of-type(1) > div img {
 }
 
 /* Especificidad (0,0,3) */
+/* La figura del mapa funciona como bloque estructural; el fondo se define para delimitar la zona interactiva. */
 article figure:nth-of-type(1) {
     width: 75%;
     margin: 1em auto;
@@ -178,6 +181,7 @@ article figure:nth-of-type(1) {
 
 /* --- CONTENEDOR DEL SVG --- */
 /* Especificidad (0,0,3) */
+/* El SVG es un bloque gráfico autónomo; el contenedor aporta fondo y el color se define dentro del propio SVG. */
 article figure:nth-of-type(2) {
     width: 75%;
     margin: 1em auto 3em auto;
@@ -187,6 +191,7 @@ article figure:nth-of-type(2) {
 
 /* CORRECCIÓN: Se eliminó la declaración duplicada exacta del SVG */
 /* Especificidad: (0,0,3) */
+/* El SVG gestiona el color internamente; este fondo solo mejora la separación visual con el resto del contenido. */
 article figure:nth-of-type(2) svg {
     width: 100%;
     height: auto;
@@ -197,6 +202,7 @@ article figure:nth-of-type(2) svg {
 /* --- HIJOS DIRECTOS --- */
 
 /* Especificidad: (0,0,2) */
+/* El contenedor de mapas dinámicos mantiene fondo y posición; el color textual lo aportan los elementos internos. */
 article > div {
     position: relative;
     display: grid;
@@ -207,12 +213,14 @@ article > div {
 }
 
 /* Especificidad: (0,0,3) */
+/* Las imágenes del contenedor heredan el contraste del bloque padre; no necesitan color textual propio. */
 article > div img {
     width: 100%;
     height: 100%;
 }
 
 /* Especificidad: (0,0,3) */
+/* El SVG se posiciona de forma absoluta sobre el contenedor, mientras el contenido visual define sus propios colores. */
 article > div svg {
     position: absolute;
     inset: 0;
@@ -221,6 +229,7 @@ article > div svg {
 }
 
 /* Especificidad: (0,0,3) */
+/* El texto superpuesto sobre mapas/herencias mantiene contraste con el fondo ya definido en el contenedor. */
 article > div p {
     position: absolute;
     left: 1rem;
@@ -280,7 +289,9 @@ dd {
 @media (max-width: 45em) {
     /* Especificidad: (0,0,1) */
     header {
+        /* Redefinición necesaria por la media query de tableta para apilar el encabezado verticalmente. */
         flex-direction: column;
+        /* Redefinición necesaria por la media query de tableta para alinear el bloque al inicio. */
         align-items: flex-start;
     }
 
@@ -306,6 +317,7 @@ dd {
 @media (max-width: 30em) {
     /* Especificidad: (0,0,1) */
     main {
+        /* Redefinición necesaria por la media query de móvil para reducir el espacio lateral y mejorar la lectura. */
         padding: 1em 4vw;
     }
 
