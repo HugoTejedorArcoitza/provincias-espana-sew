@@ -58,7 +58,7 @@ article {
     margin-bottom: 2em;
 }
 
-/* Especificidad 003 */
+/* Especificidad (0,0,3) */
 article li img {
     display: block;
     width: 15em;
@@ -186,7 +186,7 @@ article figure:nth-of-type(2) {
 }
 
 /* CORRECCIÓN: Se eliminó la declaración duplicada exacta del SVG */
-/* Especificidad: (0,1,3) */
+/* Especificidad: (0,0,3) */
 article figure:nth-of-type(2) svg {
     width: 100%;
     height: auto;
