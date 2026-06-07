@@ -30,7 +30,7 @@ $app = Controlador::ejecutar();
     <p>Estás en: <a href="index.html">Inicio</a> &gt; Reservas</p>
 
     <main>
-        <article>
+
         <section>
             <h2>Central de reservas turísticas</h2>
 
@@ -122,7 +122,7 @@ $app = Controlador::ejecutar();
                 </article>
             <?php endif; ?>
         </section>
-        </article>
+
     </main>
     <footer>
         <p>Proyecto de Software y Estándares para la Web.</p>
