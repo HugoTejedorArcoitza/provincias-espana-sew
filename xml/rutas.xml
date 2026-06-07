@@ -93,7 +93,7 @@
                 <descripcionHito>Plaza céntrica junto al Ayuntamiento de Sevilla.</descripcionHito>
                 <coordenada><longitud>-5.995400</longitud><latitud>37.388630</latitud><altitud>8</altitud></coordenada>
                 <distanciaAnterior unidades="metros">0</distanciaAnterior>
-                <galeriaFotos><foto>catedral.jpg</foto></galeriaFotos>
+                <galeriaFotos><foto>plaza_nueva.jpg</foto></galeriaFotos>
             </hito>
             <hito>
                 <nombreHito>Iglesia del Salvador</nombreHito>
@@ -107,21 +107,21 @@
                 <descripcionHito>Mirador contemporáneo sobre la plaza de la Encarnación.</descripcionHito>
                 <coordenada><longitud>-5.991880</longitud><latitud>37.393190</latitud><altitud>18</altitud></coordenada>
                 <distanciaAnterior unidades="metros">420</distanciaAnterior>
-                <galeriaFotos><foto>gastronomia_sevilla.jpg</foto></galeriaFotos>
+                <galeriaFotos><foto>metropol_parasol.jpg</foto></galeriaFotos>
             </hito>
             <hito>
                 <nombreHito>Alameda de Hércules</nombreHito>
                 <descripcionHito>Paseo histórico con bares, terrazas y actividad cultural.</descripcionHito>
                 <coordenada><longitud>-5.994700</longitud><latitud>37.397500</latitud><altitud>13</altitud></coordenada>
                 <distanciaAnterior unidades="metros">650</distanciaAnterior>
-                <galeriaFotos><foto>venerables.jpg</foto></galeriaFotos>
+                <galeriaFotos><foto>alameda_hercules.jpg</foto></galeriaFotos>
             </hito>
             <hito>
                 <nombreHito>Mercado de Feria</nombreHito>
                 <descripcionHito>Mercado tradicional cercano a la calle Feria y a zonas de tapas.</descripcionHito>
                 <coordenada><longitud>-5.990900</longitud><latitud>37.397000</latitud><altitud>12</altitud></coordenada>
                 <distanciaAnterior unidades="metros">450</distanciaAnterior>
-                <galeriaFotos><foto>gastronomia_sevilla.jpg</foto></galeriaFotos>
+                <galeriaFotos><foto>mercado_feria.jpg</foto></galeriaFotos>
             </hito>
         </hitos>
         <planimetria>planimetria-ruta-2.kml</planimetria>
@@ -131,6 +131,7 @@
         <nombre>Guadalquivir y Parque de María Luisa</nombre>
         <tipo>Paisajística</tipo>
         <transporte>Bicicleta</transporte>
+        <fecha>2026-05-04</fecha>
         <hora>09:30:00</hora>
         <duracion>2 horas</duracion>
         <agencia>BiciTur Sevilla</agencia>
@@ -155,7 +156,7 @@
                 <descripcionHito>Torre defensiva junto al Guadalquivir.</descripcionHito>
                 <coordenada><longitud>-5.996294</longitud><latitud>37.382617</latitud><altitud>7</altitud></coordenada>
                 <distanciaAnterior unidades="metros">0</distanciaAnterior>
-                <galeriaFotos><foto>santelmo.jpg</foto></galeriaFotos>
+                <galeriaFotos><foto>torre_del_oro.jpg</foto></galeriaFotos>
             </hito>
             <hito>
                 <nombreHito>Palacio de San Telmo</nombreHito>
@@ -169,21 +170,21 @@
                 <descripcionHito>Conjunto escultórico dedicado al poeta Gustavo Adolfo Bécquer.</descripcionHito>
                 <coordenada><longitud>-5.989560</longitud><latitud>37.377690</latitud><altitud>11</altitud></coordenada>
                 <distanciaAnterior unidades="metros">550</distanciaAnterior>
-                <galeriaFotos><foto>santaana.jpg</foto></galeriaFotos>
+                <galeriaFotos><foto>glorieta_becquer.jpg</foto></galeriaFotos>
             </hito>
             <hito>
                 <nombreHito>Plaza de España</nombreHito>
                 <descripcionHito>Conjunto monumental de la Exposición Iberoamericana de 1929.</descripcionHito>
                 <coordenada><longitud>-5.986944</longitud><latitud>37.377222</latitud><altitud>10</altitud></coordenada>
                 <distanciaAnterior unidades="metros">400</distanciaAnterior>
-                <galeriaFotos><foto>alcazar.jpg</foto></galeriaFotos>
+                <galeriaFotos><foto>plaza_espana.jpg</foto></galeriaFotos>
             </hito>
             <hito>
                 <nombreHito>Costurero de la Reina</nombreHito>
                 <descripcionHito>Edificio historicista situado junto al parque y el paseo del río.</descripcionHito>
                 <coordenada><longitud>-5.991860</longitud><latitud>37.375800</latitud><altitud>8</altitud></coordenada>
                 <distanciaAnterior unidades="metros">700</distanciaAnterior>
-                <galeriaFotos><foto>catedral.jpg</foto></galeriaFotos>
+                <galeriaFotos><foto>costurero_reina.jpg</foto></galeriaFotos>
             </hito>
         </hitos>
         <planimetria>planimetria-ruta-3.kml</planimetria>
