@@ -18,6 +18,7 @@ header h1 a {
 }
 
 /* Especificidad: (0,0,2) */
+/* El enlace hereda el fondo oscuro del header; el color blanco garantiza contraste AAA sin redefinir fondo. */
 nav a {
     color: #ffffff;
     text-decoration: none;
@@ -30,12 +31,14 @@ nav a.activo {
 }
 
 /* Especificidad: (0,0,2) */
+/* Las migas de pan heredan el fondo general del body/main; solo se ajusta el color para jerarquía visual. */
 body > p {
     color: #5b6670;
     font-size: 0.9em;
 }
 
 /* Especificidad: (0,0,3) */
+/* El enlace de la ruta de navegación hereda el fondo del contenedor y conserva contraste suficiente. */
 body > p a {
     color: #005a8d;
 }
@@ -47,21 +50,25 @@ main {
 }
 
 /* Especificidad: (0,0,1) */
+/* El fondo ya está definido en main; solo se fija el color del título para mantener coherencia visual. */
 h2 {
     color: #004f59;
 }
 
 /* Especificidad: (0,0,1) */
+/* El fondo heredado del contenedor es suficiente; el color del subtítulo aporta contraste y jerarquía. */
 h3 {
     color: #7a3b00;
 }
 
 /* Especificidad: (0,0,1) */
+/* Se mantiene el fondo heredado del área principal y se define solo el color del encabezado. */
 h4 {
     color: #004f59;
 }
 
 /* Especificidad: (0,0,1) */
+/* Los enlaces se muestran sobre fondos ya definidos por sus contenedores; aquí solo se normaliza el color. */
 a {
     color: #005a8d;
 }
@@ -127,6 +134,7 @@ fieldset {
 }
 
 /* Especificidad: (0,0,1) */
+/* El legend hereda el fondo del formulario y se ajusta únicamente el color para reforzar legibilidad. */
 legend {
     font-weight: bold;
     color: #004f59;
@@ -145,6 +153,7 @@ article figure:nth-of-type(1) {
 }
 
 /* Especificidad: (0,0,3) */
+/* La figura actúa como contenedor estructural; el fondo delimita el bloque y el texto hereda color del contexto. */
 article figure:nth-of-type(2) {
     border: 0.12em solid #8a949c;
     background-color: #eef6f4;
@@ -164,6 +173,7 @@ article > div img {
 }
 
 /* Especificidad: (0,0,3) */
+/* El SVG gestiona sus propios colores internos; el fondo de apoyo mejora contraste sin afectar al contenido vectorial. */
 article > div svg {
     background-color: rgba(255, 255, 255, 0.82);
 }
@@ -219,6 +229,7 @@ article > p {
 }
 
 /* Especificidad: (0,0,1) */
+/* El strong se resalta sobre el fondo heredado del texto circundante, manteniendo énfasis semántico y contraste AAA. */
 strong {
     color: #202124;
 }
