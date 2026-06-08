@@ -80,7 +80,7 @@ figure img {
 /* Control restrictivo para las imágenes dinámicas de las rutas */
 article li img {
     display: block;
-    max-width: 100%;    /
+    max-width: 100%;
     width: 25em;
     height: auto;
     margin: 0.8em 0 1.5em 0;
