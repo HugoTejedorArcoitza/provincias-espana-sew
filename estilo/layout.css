@@ -26,6 +26,15 @@ nav {
   gap: 1rem;
 }
 
+/* Especificidad: (0,0,2) */
+/* Excepción permitida por rúbrica para mapas dinámicos */
+article div {
+  width: 100%;
+  height: 35rem; /* Obligatorio para que Google Maps tenga lienzo donde pintar */
+  margin: 1.5em 0;
+  background-color: #eef6f4; /* Opcional: Color de fondo mientras carga */
+}
+
 /* Especificidad: (0,0,1) */
 form {
   display: grid;

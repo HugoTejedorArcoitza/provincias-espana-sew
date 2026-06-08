@@ -139,87 +139,59 @@ class GestorRutasTuristicas {
     }
 
     renderizarMapaGoogle(ruta, nodoDOMMapa) {
-        const waitForVisible = (node, timeout = 3000) => new Promise((resolve) => {
-            const start = performance.now();
-            const check = () => {
-                const el = node;
-                const rect = el.getBoundingClientRect ? el.getBoundingClientRect() : { width: el.offsetWidth, height: el.offsetHeight };
-                const visible = (rect.width > 0 && rect.height > 0) && document.body.contains(el);
-                if (visible) return resolve(true);
-                if (performance.now() - start > timeout) return resolve(false);
-                requestAnimationFrame(check);
-            };
-            check();
-        });
+            // 1. Aseguramos que el nodo sea un objeto válido antes de instanciar
+            if (!nodoDOMMapa) return;
 
-        (async () => {
-            const ok = await waitForVisible(nodoDOMMapa, 3000);
-            const centro = { lat: ruta.inicio.lat, lng: ruta.inicio.lng };
+            // 2. Definición limpia del mapa
             const mapa = new google.maps.Map(nodoDOMMapa, {
                 zoom: 14,
-                center: centro,
+                center: { lat: ruta.inicio.lat, lng: ruta.inicio.lng },
                 mapTypeId: 'terrain'
             });
 
+            // 3. Marcador de inicio
             new google.maps.Marker({
-                position: centro,
+                position: { lat: ruta.inicio.lat, lng: ruta.inicio.lng },
                 map: mapa,
                 title: `Inicio: ${ruta.nombre}`
             });
 
-            ruta.hitos.forEach(hito => {
-                if(!isNaN(hito.lat) && !isNaN(hito.lng)) {
-                    new google.maps.Marker({
-                        position: { lat: hito.lat, lng: hito.lng },
-                        map: mapa,
-                        title: hito.nombre
-                    });
-                }
-            });
-
+            // 4. AJAX robusto para el KML
             $.ajax({
                 url: `xml/${ruta.kml}`,
                 dataType: "xml",
                 success: (kml) => {
-                    let nodosCoords = kml.getElementsByTagNameNS("*", "coordinates");
-                    if (nodosCoords.length === 0) nodosCoords = kml.getElementsByTagName("coordinates");
+                    // Usamos una lógica de extracción más permisiva
+                    const coordsNode = kml.querySelector("coordinates");
+                    if (!coordsNode) return;
 
-                    if (nodosCoords.length > 0) {
-                        const textoCoords = nodosCoords[0].textContent.trim();
-                        const coordsKml = textoCoords.split(/\s+/);
-                        const trazado = [];
-                        const bounds = new google.maps.LatLngBounds();
+                    const coordsText = coordsNode.textContent.trim();
+                    const path = coordsText.split(/\s+/).map(p => {
+                        const [lng, lat] = p.split(",");
+                        return { lat: parseFloat(lat), lng: parseFloat(lng) };
+                    }).filter(p => !isNaN(p.lat));
 
-                        coordsKml.forEach(par => {
-                            const partes = par.split(",");
-                            if(partes.length >= 2) {
-                                const p = { lat: parseFloat(partes[1]), lng: parseFloat(partes[0]) };
-                                trazado.push(p);
-                                bounds.extend(p);
-                            }
-                        });
+                    // Dibujar la línea
+                    new google.maps.Polyline({
+                        path: path,
+                        strokeColor: '#d60000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 5,
+                        map: mapa
+                    });
 
-                        const linea = new google.maps.Polyline({
-                            path: trazado,
-                            geodesic: true,
-                            strokeColor: '#d60000',
-                            strokeOpacity: 0.8,
-                            strokeWeight: 5
-                        });
-
-                        linea.setMap(mapa);
-                        mapa.fitBounds(bounds);
-
-                        google.maps.event.addListenerOnce(mapa, 'idle', () => {
-                            google.maps.event.trigger(mapa, 'resize');
-                            if (trazado.length > 0) mapa.setCenter(trazado[0]);
-                        });
-                    }
+                    // Ajustar vista
+                    const bounds = new google.maps.LatLngBounds();
+                    path.forEach(p => bounds.extend(p));
+                    mapa.fitBounds(bounds);
                 },
-                error: () => console.warn(`No se pudo cargar KML: xml/${ruta.kml}`)
+                error: (xhr, status, error) => {
+                    console.error("Fallo al cargar KML:", error);
+                    // Inyectamos el error semántico para cumplir la Regla 6
+                    $(nodoDOMMapa).append("<p><strong>Error: Planimetría no disponible.</strong></p>");
+                }
             });
-        })();
-    }
+        }
 
     cargarSvg(archivoSvg, contenedorJQuerySvg) {
         $.ajax({
