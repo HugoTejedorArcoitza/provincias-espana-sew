@@ -109,13 +109,17 @@ $app = Controlador::ejecutar();
 
                     <h4>Catálogo de actividades</h4>
                     <ul>
-                        <?php foreach ($app->datosRecursos as $recurso): ?>
+                        <?php foreach ($app->datosRecursos as $recurso):
+                            // Extraemos las marcas de tiempo una sola vez para que sea más limpio
+                            $tInicio = strtotime($recurso['inicio']);
+                            $tFin = strtotime($recurso['fin']);
+                        ?>
                             <li>
                                 <strong><?php echo htmlspecialchars($recurso['nombre']); ?>:</strong>
                                 <?php echo number_format((float)$recurso['precio'], 2, ',', '.'); ?> €
                                 (<?php echo (int)$recurso['plazas']; ?> plazas disponibles)<br>
-                                <em>Cuándo: Del <?php echo date('d/m/Y a las H:i', strtotime($recurso['inicio'])); ?>
-                                hasta el <?php echo date('d/m/Y a las H:i', strtotime($recurso['fin'])); ?></em>
+
+                                <em>Cuándo: <?php echo date('d/m/Y', $tInicio); ?>, de <?php echo date('H:i', $tInicio); ?> a <?php echo date('H:i', $tFin); ?></em>
                             </li>
                         <?php endforeach; ?>
                     </ul>
