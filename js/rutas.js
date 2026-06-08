@@ -42,7 +42,7 @@ class GestorRutasTuristicas {
             preserveViewport: false
         });
 
-        // Rescate de lógica de circuito.js: Ajuste automático de límites
+
         google.maps.event.addListenerOnce(lectorKml, 'defaultviewport_changed', () => {
             const limites = lectorKml.getDefaultViewport();
             mapa.fitBounds(limites);
