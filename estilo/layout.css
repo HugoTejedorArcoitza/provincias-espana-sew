@@ -13,7 +13,7 @@ header {
   padding: 1em 5vw;
 }
 
-/* Especificidad: (0,0,4) */
+/* Especificidad: (0,0,2) */
 header h1 {
   margin: 0;
   font-size: 1.8rem;
@@ -26,8 +26,9 @@ nav {
   gap: 1rem;
 }
 
-/* Especificidad: (0,0,4) */
+/* Especificidad: (0,0,3) */
 /* Excepción permitida por rúbrica para mapas dinámicos */
+/* Especificidad: (0,0,3) */
 article > figure > div {
   width: 100%;
   height: 35rem; /* Lienzo necesario para que Google Maps pueda representar el mapa dinámico. */
@@ -36,7 +37,7 @@ article > figure > div {
   background-color: #eef6f4;
 }
 
-/* Especificidad: (0,0,5) */
+/* Especificidad: (0,0,4) */
 article > figure > div img {
   max-width: none;
   margin: 0;
@@ -48,12 +49,15 @@ form {
   /* Creamos 2 columnas idénticas para pantallas grandes */
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  align-items: start; /* Evita que las cajas se estiren para igualar a la más alta de su fila */
+  align-items: start;
 }
 
 /* Especificidad: (0,0,2) */
-/* El texto de "Responde las diez preguntas" y el botón final deben ocupar todo el ancho, no quedarse en una columna */
-form > p,
+form > p {
+  grid-column: 1 / -1;
+}
+
+/* Especificidad: (0,0,2) */
 form > button {
   grid-column: 1 / -1;
 }
@@ -65,8 +69,8 @@ main {
   padding: 1.5em 5vw;
 }
 
+
 /* Especificidad: (0,0,5) */
-/* Contenedor que evita el scroll horizontal de la página */
 main section article > figure > div {
   width: 100%;
   overflow-x: auto;
@@ -92,8 +96,8 @@ figure img {
   margin: 0 auto;
 }
 
+
 /* Especificidad: (0,0,3) */
-/* Control restrictivo para las imágenes dinámicas de las rutas */
 article li img {
     display: block;
     max-width: 100%;
@@ -102,8 +106,8 @@ article li img {
     margin: 0.8em 0 1.5em 0;
 }
 
+
 /* Especificidad: (0,0,1) */
-/* REGLA DE ORO RESPONSIVA PARA VÍDEO: Contención y proporción */
 video {
     display: block;
     width: 100%;
@@ -152,7 +156,12 @@ td {
 }
 
 /* Especificidad: (0,0,1) */
-th,
+th {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+/* Especificidad: (0,0,1) */
 td {
   padding: 0.5rem;
   text-align: left;
@@ -239,7 +248,12 @@ select {
 
   /* Reducimos padding en móviles para ganar espacio */
   /* Especificidad: (0,0,1) */
-  th,
+  th {
+    padding: 0.2em; /* W3C Warning: RedefiniciÃ³n justificada por el uso de media queries para garantizar la adaptabilidad. */
+  }
+
+  /* Reducimos padding en mÃ³viles para ganar espacio */
+  /* Especificidad: (0,0,1) */
   td {
     padding: 0.2em; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
