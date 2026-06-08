@@ -3,31 +3,14 @@
     <Document>
         <name>Guadalquivir y Parque de María Luisa</name>
         <Placemark>
-            <name>Guadalquivir y Parque de María Luisa</name>
             <LineString>
                 <tessellate>1</tessellate>
-                <coordinates>-5.996294,37.382617,7.0 -5.993622,37.380243,9.0 -5.98956,37.37769,11.0 -5.986944,37.377222,10.0 -5.99186,37.3758,8.0</coordinates>
+                <coordinates>-5.996294,37.382617,7.0
+-5.993622,37.380243,9.0
+-5.98956,37.37769,11.0
+-5.986944,37.377222,10.0
+-5.99186,37.3758,8.0</coordinates>
             </LineString>
-        </Placemark>
-        <Placemark>
-            <name>Torre del Oro</name>
-            <Point><coordinates>-5.996294,37.382617,7.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Palacio de San Telmo</name>
-            <Point><coordinates>-5.993622,37.380243,9.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Glorieta de Bécquer</name>
-            <Point><coordinates>-5.98956,37.37769,11.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Plaza de España</name>
-            <Point><coordinates>-5.986944,37.377222,10.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Costurero de la Reina</name>
-            <Point><coordinates>-5.99186,37.3758,8.0</coordinates></Point>
         </Placemark>
     </Document>
 </kml>

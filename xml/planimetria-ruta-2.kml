@@ -3,31 +3,14 @@
     <Document>
         <name>Sevilla de Plazas, Iglesias y Tapas</name>
         <Placemark>
-            <name>Sevilla de Plazas, Iglesias y Tapas</name>
             <LineString>
                 <tessellate>1</tessellate>
-                <coordinates>-5.9954,37.38863,8.0 -5.992838,37.389997,15.0 -5.99188,37.39319,18.0 -5.9947,37.3975,13.0 -5.9909,37.397,12.0</coordinates>
+                <coordinates>-5.9954,37.38863,8.0
+-5.992838,37.389997,15.0
+-5.99188,37.39319,18.0
+-5.9947,37.3975,13.0
+-5.9909,37.397,12.0</coordinates>
             </LineString>
-        </Placemark>
-        <Placemark>
-            <name>Plaza Nueva</name>
-            <Point><coordinates>-5.9954,37.38863,8.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Iglesia del Salvador</name>
-            <Point><coordinates>-5.992838,37.389997,15.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Metropol Parasol</name>
-            <Point><coordinates>-5.99188,37.39319,18.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Alameda de Hércules</name>
-            <Point><coordinates>-5.9947,37.3975,13.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Mercado de Feria</name>
-            <Point><coordinates>-5.9909,37.397,12.0</coordinates></Point>
         </Placemark>
     </Document>
 </kml>

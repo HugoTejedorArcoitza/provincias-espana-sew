@@ -8,127 +8,73 @@ class GeneradorRutas:
         self.arbol = ET.parse(archivo_xml)
         self.rutas = self.arbol.getroot().findall("ruta")
 
+    def haversine(self, lat1, lon1, lat2, lon2):
+        R = 6371000.0
+        phi1, phi2 = math.radians(lat1), math.radians(lat2)
+        dphi, dlambda = math.radians(lat2 - lat1), math.radians(lon2 - lon1)
+        a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
+        return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+
     def ejecutar(self):
         for posicion, ruta in enumerate(self.rutas, start=1):
-            puntos = self._puntos(ruta)
-            self._crear_kml(posicion, ruta.findtext("nombre"), puntos)
-            self._crear_svg(posicion, ruta.findtext("nombre"), puntos)
+            puntos = self._procesar_puntos(ruta)
+            self._generar_kml(posicion, ruta.findtext("nombre"), puntos)
+            self._generar_svg(posicion, ruta.findtext("nombre"), puntos)
 
-    def _puntos(self, ruta):
+    def _procesar_puntos(self, ruta):
         puntos = []
-        distancia = 0.0
+        distancia_acumulada = 0.0
+        prev_lat = prev_lon = None
         for hito in ruta.find("hitos").findall("hito"):
-            distancia += float(hito.findtext("distanciaAnterior"))
-            coordenada = hito.find("coordenada")
-            puntos.append({
-                "nombre": hito.findtext("nombreHito"),
-                "longitud": float(coordenada.findtext("longitud")),
-                "latitud": float(coordenada.findtext("latitud")),
-                "altitud": float(coordenada.findtext("altitud")),
-                "distancia": distancia,
-            })
+            coord = hito.find("coordenada")
+            lat = float(coord.findtext("latitud"))
+            lon = float(coord.findtext("longitud"))
+            alt = float(coord.findtext("altitud"))
+
+            if prev_lat is not None:
+                distancia_acumulada += self.haversine(prev_lat, prev_lon, lat, lon)
+
+            puntos.append({"nombre": hito.findtext("nombreHito"), "lat": lat, "lon": lon, "alt": alt, "dist": distancia_acumulada})
+            prev_lat, prev_lon = lat, lon
         return puntos
 
-    def _crear_kml(self, posicion, nombre, puntos):
-        coordenadas = " ".join(
-            f'{p["longitud"]},{p["latitud"]},{p["altitud"]}' for p in puntos
-        )
-        marcas = "\n".join(
-            f"""        <Placemark>
-            <name>{self._escapar(p["nombre"])}</name>
-            <Point><coordinates>{p["longitud"]},{p["latitud"]},{p["altitud"]}</coordinates></Point>
-        </Placemark>"""
-            for p in puntos
-        )
+    def _generar_kml(self, pos, nombre, puntos):
+        coords = "\n".join([f"{p['lon']},{p['lat']},{p['alt']}" for p in puntos])
         contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
     <Document>
         <name>{self._escapar(nombre)}</name>
         <Placemark>
-            <name>{self._escapar(nombre)}</name>
             <LineString>
                 <tessellate>1</tessellate>
-                <coordinates>{coordenadas}</coordinates>
+                <coordinates>{coords}</coordinates>
             </LineString>
         </Placemark>
-{marcas}
     </Document>
-</kml>
-"""
-        (self.base / f"planimetria-ruta-{posicion}.kml").write_text(contenido, encoding="utf-8")
+</kml>"""
+        (self.base / f"planimetria-ruta-{pos}.kml").write_text(contenido, encoding="utf-8")
 
-    def _crear_svg(self, posicion, nombre, puntos):
-        ancho = 1200
-        alto = 450
-        margen_lateral = 120
-        margen_superior = 100
-        margen_inferior = 60
+    def _generar_svg(self, pos, nombre, puntos):
+        w, h, m = 1000, 400, 60
+        dists = [p["dist"] for p in puntos]
+        alts = [p["alt"] for p in puntos]
+        min_d, max_d = min(dists), max(dists)
+        min_a, max_a = min(alts), max(alts) or 1
 
-        max_distancia = max(p["distancia"] for p in puntos) or 1
-        min_altitud = min(p["altitud"] for p in puntos)
-        max_altitud = max(p["altitud"] for p in puntos)
-        rango_altitud = max(max_altitud - min_altitud, 1)
+        def sx(d): return m + (d - min_d) / (max_d - min_d or 1) * (w - 2*m)
+        def sy(a): return h - m - (a - min_a) / (max_a - min_a or 1) * (h - 2*m)
 
-        coordenadas = []
-        etiquetas = []
-
-        for idx, punto in enumerate(puntos):
-            x = margen_lateral + (punto["distancia"] / max_distancia) * (ancho - 2 * margen_lateral)
-            y = alto - margen_inferior - ((punto["altitud"] - min_altitud) / rango_altitud) * (alto - margen_superior - margen_inferior)
-            coordenadas.append(f"{x:.2f},{y:.2f}")
-
-            # TRUCO 1: Anclaje inteligente según la posición del punto
-            if idx == 0:
-                anclaje = 'text-anchor="start"'
-                offset_x = 8  # Ligeramente desplazado a la derecha
-            elif idx == len(puntos) - 1:
-                anclaje = 'text-anchor="end"'
-                offset_x = -8 # Ligeramente desplazado a la izquierda
-            else:
-                anclaje = 'text-anchor="middle"'
-                offset_x = 0  # Centrado perfecto
-
-            # TRUCO 2: Alternar la altura (zigzag) para que los textos nunca se pisen
-            offset_y = 15 if idx % 2 == 0 else 35
-            y_texto = max(20, y - offset_y)
-
-            # Generamos el texto completamente en horizontal sin rotaciones raras
-            etiquetas.append(
-                f'<text x="{(x + offset_x):.2f}" y="{y_texto:.2f}" {anclaje}>{self._escapar(punto["nombre"])}</text>'
-            )
-
-        base = f"{margen_lateral},{alto - margen_inferior} " + " ".join(coordenadas) + f" {ancho - margen_lateral},{alto - margen_inferior} {margen_lateral},{alto - margen_inferior}"
-
-        marcas = "\n        ".join(
-            f'<circle cx="{par.split(",")[0]}" cy="{par.split(",")[1]}" r="5" fill="#004f59" />' for par in coordenadas
-        )
+        poly = " ".join([f"{sx(p['dist'])},{sy(p['alt'])}" for p in puntos])
 
         contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {ancho} {alto}" role="img" aria-label="Altimetría de {self._escapar(nombre)}">
-    <title>Altimetría de {self._escapar(nombre)}</title>
-    <desc>Polilínea cerrada con escala horizontal en metros y escala vertical en metros.</desc>
-    <rect x="0" y="0" width="{ancho}" height="{alto}" fill="#ffffff" />
-    
-    <line x1="{margen_lateral}" y1="{alto - margen_inferior}" x2="{ancho - margen_lateral}" y2="{alto - margen_inferior}" stroke="#263238" stroke-width="2" />
-    <line x1="{margen_lateral}" y1="{margen_superior}" x2="{margen_lateral}" y2="{alto - margen_inferior}" stroke="#263238" stroke-width="2" />
-    
-    <text x="{ancho / 2}" y="{alto - 20}" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#263238">Distancia acumulada: {math.floor(max_distancia)} m</text>
-    <text x="35" y="{alto / 2}" transform="rotate(-90 35 {alto / 2})" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#263238">Altitud: {min_altitud:.0f}-{max_altitud:.0f} m</text>
-    
-    <polyline points="{base}" fill="#dff1ed" stroke="#006d75" stroke-width="4" />
-    {marcas}
-    <g font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1f2933">
-        {"\n        ".join(etiquetas)}
-    </g>
-</svg>
-"""
-        (self.base / f"altimetria-ruta-{posicion}.svg").write_text(contenido, encoding="utf-8")
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">
+    <polyline points="{poly}" fill="none" stroke="red" stroke-width="2" />
+    <text x="{w/2}" y="{m/2}" text-anchor="middle">{self._escapar(nombre)}</text>
+</svg>"""
+        (self.base / f"altimetria-ruta-{pos}.svg").write_text(contenido, encoding="utf-8")
 
     @staticmethod
-    def _escapar(texto):
-        return (texto or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
+    def _escapar(t): return (t or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 if __name__ == "__main__":
-
     GeneradorRutas(Path(__file__).with_name("rutas.xml")).ejecutar()

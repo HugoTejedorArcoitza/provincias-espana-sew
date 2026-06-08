@@ -3,31 +3,14 @@
     <Document>
         <name>Sevilla Monumental y Triana</name>
         <Placemark>
-            <name>Sevilla Monumental y Triana</name>
             <LineString>
                 <tessellate>1</tessellate>
-                <coordinates>-5.990226,37.383052,12.0 -5.989935,37.385151,14.0 -5.993107,37.385825,11.0 -5.993622,37.380243,9.0 -6.000543,37.382823,10.0</coordinates>
+                <coordinates>-5.990226,37.383052,12.0
+-5.989935,37.385151,14.0
+-5.993107,37.385825,11.0
+-5.993622,37.380243,9.0
+-6.000543,37.382823,10.0</coordinates>
             </LineString>
-        </Placemark>
-        <Placemark>
-            <name>Real Alcázar de Sevilla</name>
-            <Point><coordinates>-5.990226,37.383052,12.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Hospital de los Venerables</name>
-            <Point><coordinates>-5.989935,37.385151,14.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Catedral de Sevilla</name>
-            <Point><coordinates>-5.993107,37.385825,11.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Palacio de San Telmo</name>
-            <Point><coordinates>-5.993622,37.380243,9.0</coordinates></Point>
-        </Placemark>
-        <Placemark>
-            <name>Real Parroquia de Señora Santa Ana</name>
-            <Point><coordinates>-6.000543,37.382823,10.0</coordinates></Point>
         </Placemark>
     </Document>
 </kml>

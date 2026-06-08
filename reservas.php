@@ -68,39 +68,39 @@ $app = Controlador::ejecutar();
                     <?php if (count($app->datosReservas) === 0): ?>
                         <p>No tienes reservas activas.</p>
                     <?php else: ?>
-                        <div>
-                            <table>
-                                <caption>Tus actividades reservadas</caption>
-                                <thead>
+
+                        <table>
+                            <caption>Tus actividades reservadas</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Recurso</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Plazas</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($app->datosReservas as $reserva): ?>
                                     <tr>
-                                        <th scope="col">Recurso</th>
-                                        <th scope="col">Estado</th>
-                                        <th scope="col">Plazas</th>
-                                        <th scope="col">Total</th>
-                                        <th scope="col">Acción</th>
+                                        <td><?php echo htmlspecialchars($reserva['nombre']); ?></td>
+                                        <td><?php echo htmlspecialchars($reserva['estado']); ?></td>
+                                        <td><?php echo (int)$reserva['plazas']; ?></td>
+                                        <td><?php echo number_format((float)$reserva['presupuesto'], 2, ',', '.'); ?> €</td>
+                                        <td>
+                                            <?php if ($reserva['estado'] === 'Confirmada'): ?>
+                                                <form action="reservas.php" method="post">
+                                                    <input type="hidden" name="accion" value="anular" />
+                                                    <input type="hidden" name="reserva" value="<?php echo (int)$reserva['id_reserva']; ?>" />
+                                                    <button type="submit">Anular</button>
+                                                </form>
+                                            <?php endif; ?>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($app->datosReservas as $reserva): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($reserva['nombre']); ?></td>
-                                            <td><?php echo htmlspecialchars($reserva['estado']); ?></td>
-                                            <td><?php echo (int)$reserva['plazas']; ?></td>
-                                            <td><?php echo number_format((float)$reserva['presupuesto'], 2, ',', '.'); ?> €</td>
-                                            <td>
-                                                <?php if ($reserva['estado'] === 'Confirmada'): ?>
-                                                    <form action="reservas.php" method="post">
-                                                        <input type="hidden" name="accion" value="anular" />
-                                                        <input type="hidden" name="reserva" value="<?php echo (int)$reserva['id_reserva']; ?>" />
-                                                        <button type="submit">Anular</button>
-                                                    </form>
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+
                     <?php endif; ?>
                 </article>
 
