@@ -55,21 +55,91 @@ class GeneradorRutas:
         (self.base / f"planimetria-ruta-{pos}.kml").write_text(contenido, encoding="utf-8")
 
     def _generar_svg(self, pos, nombre, puntos):
-        w, h, m = 1000, 400, 60
+        ancho, alto = 1100, 520
+        margen_izquierdo, margen_derecho = 90, 55
+        margen_superior, margen_inferior = 70, 105
+        grafico_ancho = ancho - margen_izquierdo - margen_derecho
+        grafico_alto = alto - margen_superior - margen_inferior
+        base_y = alto - margen_inferior
+
         dists = [p["dist"] for p in puntos]
         alts = [p["alt"] for p in puntos]
         min_d, max_d = min(dists), max(dists)
-        min_a, max_a = min(alts), max(alts) or 1
+        min_a, max_a = min(alts), max(alts)
+        if min_a == max_a:
+            min_a -= 1
+            max_a += 1
 
-        def sx(d): return m + (d - min_d) / (max_d - min_d or 1) * (w - 2*m)
-        def sy(a): return h - m - (a - min_a) / (max_a - min_a or 1) * (h - 2*m)
+        def sx(distancia):
+            return margen_izquierdo + (distancia - min_d) / (max_d - min_d or 1) * grafico_ancho
 
-        poly = " ".join([f"{sx(p['dist'])},{sy(p['alt'])}" for p in puntos])
+        def sy(altitud):
+            return base_y - (altitud - min_a) / (max_a - min_a) * grafico_alto
+
+        puntos_linea = [(sx(p["dist"]), sy(p["alt"])) for p in puntos]
+        puntos_perfil = " ".join(f"{x:.2f},{y:.2f}" for x, y in puntos_linea)
+        puntos_cerrados = (
+            f"{margen_izquierdo:.2f},{base_y:.2f} "
+            + puntos_perfil
+            + f" {margen_izquierdo + grafico_ancho:.2f},{base_y:.2f}"
+        )
+
+        lineas_grid = []
+        etiquetas_ejes = []
+        for paso in range(5):
+            proporcion = paso / 4
+            x = margen_izquierdo + proporcion * grafico_ancho
+            distancia = min_d + proporcion * (max_d - min_d)
+            lineas_grid.append(f'<line x1="{x:.2f}" y1="{margen_superior}" x2="{x:.2f}" y2="{base_y}" />')
+            etiquetas_ejes.append(f'<text x="{x:.2f}" y="{base_y + 28}" text-anchor="middle">{distancia:.0f} m</text>')
+
+            y = base_y - proporcion * grafico_alto
+            altitud = min_a + proporcion * (max_a - min_a)
+            lineas_grid.append(f'<line x1="{margen_izquierdo}" y1="{y:.2f}" x2="{margen_izquierdo + grafico_ancho}" y2="{y:.2f}" />')
+            etiquetas_ejes.append(f'<text x="{margen_izquierdo - 14}" y="{y + 5:.2f}" text-anchor="end">{altitud:.0f} m</text>')
+
+        marcadores = []
+        for indice, punto in enumerate(puntos):
+            x, y = puntos_linea[indice]
+            nombre_hito = self._escapar(punto["nombre"])
+            etiqueta_y = y - 18 if indice % 2 == 0 else y + 34
+            if indice == 0:
+                ancla = "start"
+            elif indice == len(puntos) - 1:
+                ancla = "end"
+            else:
+                ancla = "middle"
+            marcadores.append(f'<circle cx="{x:.2f}" cy="{y:.2f}" r="7" />')
+            marcadores.append(f'<text x="{x:.2f}" y="{etiqueta_y:.2f}" text-anchor="{ancla}">{nombre_hito}</text>')
+            marcadores.append(f'<text x="{x:.2f}" y="{base_y + 52}" text-anchor="middle">{indice + 1}</text>')
 
         contenido = f"""<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">
-    <polyline points="{poly}" fill="none" stroke="red" stroke-width="2" />
-    <text x="{w/2}" y="{m/2}" text-anchor="middle">{self._escapar(nombre)}</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {ancho} {alto}" role="img" aria-label="Altimetría de {self._escapar(nombre)}">
+    <title>Altimetría de {self._escapar(nombre)}</title>
+    <desc>Perfil altimétrico con distancia horizontal en metros, altitud vertical en metros y nombres de los hitos.</desc>
+    <rect x="0" y="0" width="{ancho}" height="{alto}" fill="#ffffff" />
+    <text x="{ancho / 2:.2f}" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#004f59">{self._escapar(nombre)}</text>
+    <g stroke="#d6dee2" stroke-width="1">
+        {"".join(lineas_grid)}
+    </g>
+    <line x1="{margen_izquierdo}" y1="{base_y}" x2="{margen_izquierdo + grafico_ancho}" y2="{base_y}" stroke="#263238" stroke-width="2" />
+    <line x1="{margen_izquierdo}" y1="{margen_superior}" x2="{margen_izquierdo}" y2="{base_y}" stroke="#263238" stroke-width="2" />
+    <polygon points="{puntos_cerrados}" fill="#dff1ed" stroke="none" />
+    <polyline points="{puntos_perfil}" fill="none" stroke="#006d75" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <g fill="#ffffff" stroke="#7a3b00" stroke-width="4">
+        {"".join(marcadores[0::3])}
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1f2933">
+        {"".join(marcadores[1::3])}
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#7a3b00" font-weight="700">
+        {"".join(marcadores[2::3])}
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1f2933">
+        {"".join(etiquetas_ejes)}
+    </g>
+    <text x="{ancho / 2:.2f}" y="{alto - 20}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1f2933">Distancia acumulada de la ruta en metros</text>
+    <text x="24" y="{margen_superior + grafico_alto / 2:.2f}" transform="rotate(-90 24 {margen_superior + grafico_alto / 2:.2f})" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1f2933">Altitud en metros</text>
 </svg>"""
         (self.base / f"altimetria-ruta-{pos}.svg").write_text(contenido, encoding="utf-8")
 

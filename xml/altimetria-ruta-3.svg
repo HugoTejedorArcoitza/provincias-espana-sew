@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400">
-    <polyline points="60.0,340.0 266.2586285168531,200.0 532.7749351074597,60.0 670.7694551141466,130.0 940.0,270.0" fill="none" stroke="red" stroke-width="2" />
-    <text x="500.0" y="30.0" text-anchor="middle">Guadalquivir y Parque de María Luisa</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" role="img" aria-label="Altimetría de Guadalquivir y Parque de María Luisa">
+    <title>Altimetría de Guadalquivir y Parque de María Luisa</title>
+    <desc>Perfil altimétrico con distancia horizontal en metros, altitud vertical en metros y nombres de los hitos.</desc>
+    <rect x="0" y="0" width="1100" height="520" fill="#ffffff" />
+    <text x="550.00" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#004f59">Guadalquivir y Parque de María Luisa</text>
+    <g stroke="#d6dee2" stroke-width="1">
+        <line x1="90.00" y1="70" x2="90.00" y2="415" /><line x1="90" y1="415.00" x2="1045" y2="415.00" /><line x1="328.75" y1="70" x2="328.75" y2="415" /><line x1="90" y1="328.75" x2="1045" y2="328.75" /><line x1="567.50" y1="70" x2="567.50" y2="415" /><line x1="90" y1="242.50" x2="1045" y2="242.50" /><line x1="806.25" y1="70" x2="806.25" y2="415" /><line x1="90" y1="156.25" x2="1045" y2="156.25" /><line x1="1045.00" y1="70" x2="1045.00" y2="415" /><line x1="90" y1="70.00" x2="1045" y2="70.00" />
+    </g>
+    <line x1="90" y1="415" x2="1045" y2="415" stroke="#263238" stroke-width="2" />
+    <line x1="90" y1="70" x2="90" y2="415" stroke="#263238" stroke-width="2" />
+    <polygon points="90.00,415.00 90.00,415.00 313.84,242.50 603.07,70.00 752.82,156.25 1045.00,328.75 1045.00,415.00" fill="#dff1ed" stroke="none" />
+    <polyline points="90.00,415.00 313.84,242.50 603.07,70.00 752.82,156.25 1045.00,328.75" fill="none" stroke="#006d75" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <g fill="#ffffff" stroke="#7a3b00" stroke-width="4">
+        <circle cx="90.00" cy="415.00" r="7" /><circle cx="313.84" cy="242.50" r="7" /><circle cx="603.07" cy="70.00" r="7" /><circle cx="752.82" cy="156.25" r="7" /><circle cx="1045.00" cy="328.75" r="7" />
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1f2933">
+        <text x="90.00" y="397.00" text-anchor="start">Torre del Oro</text><text x="313.84" y="276.50" text-anchor="middle">Palacio de San Telmo</text><text x="603.07" y="52.00" text-anchor="middle">Glorieta de Bécquer</text><text x="752.82" y="190.25" text-anchor="middle">Plaza de España</text><text x="1045.00" y="310.75" text-anchor="end">Costurero de la Reina</text>
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#7a3b00" font-weight="700">
+        <text x="90.00" y="467" text-anchor="middle">1</text><text x="313.84" y="467" text-anchor="middle">2</text><text x="603.07" y="467" text-anchor="middle">3</text><text x="752.82" y="467" text-anchor="middle">4</text><text x="1045.00" y="467" text-anchor="middle">5</text>
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1f2933">
+        <text x="90.00" y="443" text-anchor="middle">0 m</text><text x="76" y="420.00" text-anchor="end">7 m</text><text x="328.75" y="443" text-anchor="middle">378 m</text><text x="76" y="333.75" text-anchor="end">8 m</text><text x="567.50" y="443" text-anchor="middle">755 m</text><text x="76" y="247.50" text-anchor="end">9 m</text><text x="806.25" y="443" text-anchor="middle">1133 m</text><text x="76" y="161.25" text-anchor="end">10 m</text><text x="1045.00" y="443" text-anchor="middle">1511 m</text><text x="76" y="75.00" text-anchor="end">11 m</text>
+    </g>
+    <text x="550.00" y="500" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1f2933">Distancia acumulada de la ruta en metros</text>
+    <text x="24" y="242.50" transform="rotate(-90 24 242.50)" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1f2933">Altitud en metros</text>
 </svg>

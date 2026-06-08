@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400">
-    <polyline points="60.0,172.0 173.36434859481,60.0 313.4224512923356,228.0 613.8906884733445,340.0 940.0,284.0" fill="none" stroke="red" stroke-width="2" />
-    <text x="500.0" y="30.0" text-anchor="middle">Sevilla Monumental y Triana</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" role="img" aria-label="Altimetría de Sevilla Monumental y Triana">
+    <title>Altimetría de Sevilla Monumental y Triana</title>
+    <desc>Perfil altimétrico con distancia horizontal en metros, altitud vertical en metros y nombres de los hitos.</desc>
+    <rect x="0" y="0" width="1100" height="520" fill="#ffffff" />
+    <text x="550.00" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#004f59">Sevilla Monumental y Triana</text>
+    <g stroke="#d6dee2" stroke-width="1">
+        <line x1="90.00" y1="70" x2="90.00" y2="415" /><line x1="90" y1="415.00" x2="1045" y2="415.00" /><line x1="328.75" y1="70" x2="328.75" y2="415" /><line x1="90" y1="328.75" x2="1045" y2="328.75" /><line x1="567.50" y1="70" x2="567.50" y2="415" /><line x1="90" y1="242.50" x2="1045" y2="242.50" /><line x1="806.25" y1="70" x2="806.25" y2="415" /><line x1="90" y1="156.25" x2="1045" y2="156.25" /><line x1="1045.00" y1="70" x2="1045.00" y2="415" /><line x1="90" y1="70.00" x2="1045" y2="70.00" />
+    </g>
+    <line x1="90" y1="415" x2="1045" y2="415" stroke="#263238" stroke-width="2" />
+    <line x1="90" y1="70" x2="90" y2="415" stroke="#263238" stroke-width="2" />
+    <polygon points="90.00,415.00 90.00,208.00 213.03,70.00 365.02,277.00 691.10,415.00 1045.00,346.00 1045.00,415.00" fill="#dff1ed" stroke="none" />
+    <polyline points="90.00,208.00 213.03,70.00 365.02,277.00 691.10,415.00 1045.00,346.00" fill="none" stroke="#006d75" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <g fill="#ffffff" stroke="#7a3b00" stroke-width="4">
+        <circle cx="90.00" cy="208.00" r="7" /><circle cx="213.03" cy="70.00" r="7" /><circle cx="365.02" cy="277.00" r="7" /><circle cx="691.10" cy="415.00" r="7" /><circle cx="1045.00" cy="346.00" r="7" />
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1f2933">
+        <text x="90.00" y="190.00" text-anchor="start">Real Alcázar de Sevilla</text><text x="213.03" y="104.00" text-anchor="middle">Hospital de los Venerables</text><text x="365.02" y="259.00" text-anchor="middle">Catedral de Sevilla</text><text x="691.10" y="449.00" text-anchor="middle">Palacio de San Telmo</text><text x="1045.00" y="328.00" text-anchor="end">Real Parroquia de Señora Santa Ana</text>
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#7a3b00" font-weight="700">
+        <text x="90.00" y="467" text-anchor="middle">1</text><text x="213.03" y="467" text-anchor="middle">2</text><text x="365.02" y="467" text-anchor="middle">3</text><text x="691.10" y="467" text-anchor="middle">4</text><text x="1045.00" y="467" text-anchor="middle">5</text>
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1f2933">
+        <text x="90.00" y="443" text-anchor="middle">0 m</text><text x="76" y="420.00" text-anchor="end">9 m</text><text x="328.75" y="443" text-anchor="middle">456 m</text><text x="76" y="333.75" text-anchor="end">10 m</text><text x="567.50" y="443" text-anchor="middle">911 m</text><text x="76" y="247.50" text-anchor="end">12 m</text><text x="806.25" y="443" text-anchor="middle">1367 m</text><text x="76" y="161.25" text-anchor="end">13 m</text><text x="1045.00" y="443" text-anchor="middle">1823 m</text><text x="76" y="75.00" text-anchor="end">14 m</text>
+    </g>
+    <text x="550.00" y="500" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1f2933">Distancia acumulada de la ruta en metros</text>
+    <text x="24" y="242.50" transform="rotate(-90 24 242.50)" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1f2933">Altitud en metros</text>
 </svg>

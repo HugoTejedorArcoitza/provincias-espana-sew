@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400">
-    <polyline points="60.0,340.0 218.05431150274956,144.0 429.6403146643359,60.0 742.7531745022292,200.0 940.0,228.0" fill="none" stroke="red" stroke-width="2" />
-    <text x="500.0" y="30.0" text-anchor="middle">Sevilla de Plazas, Iglesias y Tapas</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" role="img" aria-label="Altimetría de Sevilla de Plazas, Iglesias y Tapas">
+    <title>Altimetría de Sevilla de Plazas, Iglesias y Tapas</title>
+    <desc>Perfil altimétrico con distancia horizontal en metros, altitud vertical en metros y nombres de los hitos.</desc>
+    <rect x="0" y="0" width="1100" height="520" fill="#ffffff" />
+    <text x="550.00" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#004f59">Sevilla de Plazas, Iglesias y Tapas</text>
+    <g stroke="#d6dee2" stroke-width="1">
+        <line x1="90.00" y1="70" x2="90.00" y2="415" /><line x1="90" y1="415.00" x2="1045" y2="415.00" /><line x1="328.75" y1="70" x2="328.75" y2="415" /><line x1="90" y1="328.75" x2="1045" y2="328.75" /><line x1="567.50" y1="70" x2="567.50" y2="415" /><line x1="90" y1="242.50" x2="1045" y2="242.50" /><line x1="806.25" y1="70" x2="806.25" y2="415" /><line x1="90" y1="156.25" x2="1045" y2="156.25" /><line x1="1045.00" y1="70" x2="1045.00" y2="415" /><line x1="90" y1="70.00" x2="1045" y2="70.00" />
+    </g>
+    <line x1="90" y1="415" x2="1045" y2="415" stroke="#263238" stroke-width="2" />
+    <line x1="90" y1="70" x2="90" y2="415" stroke="#263238" stroke-width="2" />
+    <polygon points="90.00,415.00 90.00,415.00 261.52,173.50 491.14,70.00 830.94,242.50 1045.00,277.00 1045.00,415.00" fill="#dff1ed" stroke="none" />
+    <polyline points="90.00,415.00 261.52,173.50 491.14,70.00 830.94,242.50 1045.00,277.00" fill="none" stroke="#006d75" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <g fill="#ffffff" stroke="#7a3b00" stroke-width="4">
+        <circle cx="90.00" cy="415.00" r="7" /><circle cx="261.52" cy="173.50" r="7" /><circle cx="491.14" cy="70.00" r="7" /><circle cx="830.94" cy="242.50" r="7" /><circle cx="1045.00" cy="277.00" r="7" />
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1f2933">
+        <text x="90.00" y="397.00" text-anchor="start">Plaza Nueva</text><text x="261.52" y="207.50" text-anchor="middle">Iglesia del Salvador</text><text x="491.14" y="52.00" text-anchor="middle">Metropol Parasol</text><text x="830.94" y="276.50" text-anchor="middle">Alameda de Hércules</text><text x="1045.00" y="259.00" text-anchor="end">Mercado de Feria</text>
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#7a3b00" font-weight="700">
+        <text x="90.00" y="467" text-anchor="middle">1</text><text x="261.52" y="467" text-anchor="middle">2</text><text x="491.14" y="467" text-anchor="middle">3</text><text x="830.94" y="467" text-anchor="middle">4</text><text x="1045.00" y="467" text-anchor="middle">5</text>
+    </g>
+    <g font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1f2933">
+        <text x="90.00" y="443" text-anchor="middle">0 m</text><text x="76" y="420.00" text-anchor="end">8 m</text><text x="328.75" y="443" text-anchor="middle">380 m</text><text x="76" y="333.75" text-anchor="end">10 m</text><text x="567.50" y="443" text-anchor="middle">759 m</text><text x="76" y="247.50" text-anchor="end">13 m</text><text x="806.25" y="443" text-anchor="middle">1139 m</text><text x="76" y="161.25" text-anchor="end">16 m</text><text x="1045.00" y="443" text-anchor="middle">1518 m</text><text x="76" y="75.00" text-anchor="end">18 m</text>
+    </g>
+    <text x="550.00" y="500" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1f2933">Distancia acumulada de la ruta en metros</text>
+    <text x="24" y="242.50" transform="rotate(-90 24 242.50)" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1f2933">Altitud en metros</text>
 </svg>
