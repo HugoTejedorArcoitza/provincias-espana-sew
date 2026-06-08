@@ -17,6 +17,45 @@ header h1 a {
     text-decoration: none;
 }
 
+/* Especificidad: (0,0,1) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    table-layout: fixed; /* OBLIGATORIO: Evita que la tabla empuje el layout */
+}
+
+/* Especificidad: (0,0,2) */
+td button {
+    width: 100%;
+    padding: 0.5em 0.75em;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Especificidad: (0,0,1) */
+td {
+    white-space: nowrap; /* Mantiene la integridad en celdas pequeñas */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Corta texto largo con ... */
+    min-width: 3em;
+}
+
+/* Especificidad: (0,0,1) */
+th, td {
+    padding: 0.5rem;
+    border: 0.06em solid #ccc;
+    text-align: left;
+}
+
+/* Especificidad: (0,0,1) */
+th {
+    background-color: #004f59;
+    color: #ffffff;
+    border: 0.08em solid #8a949c;
+}
+
 /* Especificidad: (0,0,2) */
 nav a {
     color: #ffffff;
@@ -47,24 +86,10 @@ main {
 }
 
 /* Especificidad: (0,0,1) */
-h2 {
-    color: #004f59;
-}
-
-/* Especificidad: (0,0,1) */
-h3 {
-    color: #7a3b00;
-}
-
-/* Especificidad: (0,0,1) */
-h4 {
-    color: #004f59;
-}
-
-/* Especificidad: (0,0,1) */
-a {
-    color: #005a8d;
-}
+h2 { color: #004f59; }
+h3 { color: #7a3b00; }
+h4 { color: #004f59; }
+a { color: #005a8d; }
 
 /* Especificidad: (0,0,1) */
 button {
@@ -78,51 +103,11 @@ button {
 /* Especificidad: (0,1,1) */
 button:disabled {
     background-color: #6f7c82;
-    color: #ffffff;
     cursor: not-allowed;
 }
 
 /* Especificidad: (0,0,1) */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    table-layout: fixed;
-}
-
-/* Especificidad: (0,0,1) */
-caption {
-    font-weight: bold;
-}
-
-/* Especificidad: (0,0,1) */
-th {
-    background-color: #004f59;
-    color: #ffffff;
-    border: 0.08em solid #8a949c;
-    text-align: left;
-    padding: 0.5rem;
-}
-
-/* Especificidad: (0,0,1) */
-td {
-    border: 0.08em solid #8a949c;
-    padding: 0.5rem;
-    white-space: normal;
-    min-width: 5em;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-}
-
-/* Especificidad: (0,0,2) */
-td button {
-    width: 100%;
-    padding: 0.5em 0.75em;
-    box-sizing: border-box;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
+caption { font-weight: bold; }
 
 /* Especificidad: (0,0,1) */
 figure {
@@ -131,26 +116,13 @@ figure {
 }
 
 /* Especificidad: (0,0,1) */
-figcaption {
-    font-weight: bold;
-}
+figcaption { font-weight: bold; }
 
 /* Especificidad: (0,0,1) */
-video {
-    background-color: #000000;
-    color: #ffffff;
-}
+fieldset { border: 0.08em solid #8a949c; }
 
 /* Especificidad: (0,0,1) */
-fieldset {
-    border: 0.08em solid #8a949c;
-}
-
-/* Especificidad: (0,0,1) */
-legend {
-    font-weight: bold;
-    color: #004f59;
-}
+legend { font-weight: bold; color: #004f59; }
 
 /* Especificidad: (0,0,1) */
 footer {
@@ -158,81 +130,8 @@ footer {
     color: #ffffff;
 }
 
-/* --- COLORES DE MAPAS Y SVGs --- */
-/* Especificidad: (0,0,3) */
-article figure:nth-of-type(1), article figure:nth-of-type(2) {
-    border: 0.12em solid #8a949c;
-}
-
-/* Especificidad: (0,0,3) */
-article figure:nth-of-type(2) {
-    background-color: #eef6f4;
-}
-
-/* --- RESTO DE REGLAS DE CONTENIDO --- */
-/* Especificidad: (0,0,2) */
-article > div {
-    background-color: #e6eef1;
-    color: #1f2933;
-    border: 0.08em solid #8a949c;
-}
-
-/* Especificidad: (0,0,3) */
-article > div img {
-    border: 0;
-}
-
-/* Especificidad: (0,0,3) */
-article > div svg {
-    background-color: rgba(255, 255, 255, 0.82);
-}
-
-/* Especificidad: (0,0,3) */
-article > div p {
-    background-color: #ffffff;
-    color: #1f2933;
-}
-
-/* Especificidad: (0,0,3) */
-section article svg {
-    border: 0.08em solid #8a949c;
-}
-
-/* Especificidad: (0,0,1) */
-output {
-    background-color: #eef6f4;
-    color: #1f2933;
-    font-weight: bold;
-}
-
-/* Especificidad: (0,0,1) */
-input {
-    accent-color: #006d75;
-}
-
-/* Especificidad: (0,0,2) */
-tbody tr {
-    background-color: #ffffff;
-    color: #1f2933;
-}
-
 /* Especificidad: (0,1,2) */
-tbody tr:nth-child(even) {
-    background-color: #eef6f4;
-    color: #1f2933;
-}
-
-/* Especificidad: (0,0,3) */
-article figure img {
-    max-height: 20em;
-}
-
-/* Especificidad: (0,0,2) */
-section > p, article > p {
-    line-height: 1.55;
-}
+tbody tr:nth-child(even) { background-color: #eef6f4; }
 
 /* Especificidad: (0,0,1) */
-strong {
-    color: #202124;
-}
+strong { color: #202124; }
