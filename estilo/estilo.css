@@ -120,6 +120,21 @@ td button {
     text-overflow: ellipsis;
 }
 /* Especificidad: (0,0,1) */
+select {
+    width: 100%;          /* Ocupará el ancho disponible de su contenedor (el label o el form) */
+    max-width: 100%;      /* Medida de seguridad vital contra desbordamientos */
+    padding: 0.5em;
+    box-sizing: border-box; /* Evita que el padding sume tamaño extra y rompa el 100% */
+    font-family: inherit;
+    font-size: 0.9rem;    /* Tamaño fluido usando rem */
+
+    /* El truco para que el texto seleccionado no ensanche la caja */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Si seleccionas una muy larga, mostrará "Degustación de tapas..." */
+}
+
+/* Especificidad: (0,0,1) */
 caption { font-weight: bold; }
 
 /* Especificidad: (0,0,1) */
