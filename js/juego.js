@@ -70,16 +70,16 @@ class JuegoTuristico {
 
 document.addEventListener("DOMContentLoaded", () => {
     const preguntas = [
-        new Pregunta("¿Qué provincia protagoniza el proyecto?", ["Cádiz", "Sevilla", "Málaga", "Granada", "Córdoba"], 1),
-        new Pregunta("¿Qué sección muestra platos típicos?", ["Juego", "Reservas", "Gastronomía", "Meteorología", "Ayuda"], 2),
-        new Pregunta("¿Qué plato aparece en gastronomía?", ["Pulpo a feira", "Gazpacho andaluz", "Fabada", "Marmitako", "Cocido montañés"], 1),
-        new Pregunta("¿Qué elemento permite volver al inicio?", ["El título principal", "La tabla", "El vídeo", "La previsión", "La puntuación"], 0),
-        new Pregunta("¿Qué archivo alimenta la página de rutas?", ["rutas.xml", "layout.css", "reservas.csv", "index.php", "juego.json"], 0),
-        new Pregunta("¿Cuántas preguntas tiene este juego?", ["5", "7", "8", "10", "12"], 3),
-        new Pregunta("¿Qué sección muestra la previsión semanal?", ["Rutas", "Meteorología", "Gastronomía", "Inicio", "Reservas"], 1),
-        new Pregunta("¿Qué ruta usa bicicleta?", ["Guadalquivir y Parque de María Luisa", "Sevilla Monumental y Triana", "Sevilla de Plazas, Iglesias y Tapas", "Ruta de los molinos", "Ruta de la costa"], 0),
-        new Pregunta("¿Qué barrio aparece en la ruta monumental?", ["Triana", "La Calzada", "El Llano", "La Arena", "Somió"], 0),
-        new Pregunta("¿Qué sección sirve para registrar y gestionar reservas?", ["Ayuda", "Reservas", "Juego", "Inicio", "Rutas"], 1)
+        new Pregunta("¿Cuál de los siguientes es un plato principal de la gastronomía sevillana?", ["Paella", "Gazpacho andaluz", "Fabada", "Cocido madrileño", "Lentejas"], 1),
+        new Pregunta("¿Qué técnica de marinado es típica en Sevilla?", ["Escabeche", "Adobo", "Salazón", "Ahumado", "Curado"], 1),
+        new Pregunta("¿En qué estación es más típico consumir torrijas en Sevilla?", ["Verano", "Otoño", "Invierno", "Semana Santa", "Navidad"], 3),
+        new Pregunta("¿Qué tipo de transporte se utiliza en la ruta 'Guadalquivir y Parque de María Luisa'?", ["A pie", "Bicicleta", "Autobús", "Coche", "Metro"], 1),
+        new Pregunta("¿Cuál es el punto de inicio de la ruta 'Sevilla Monumental y Triana'?", ["Plaza de España", "Torre del Oro", "Real Alcázar de Sevilla", "Alameda de Hércules", "Plaza Nueva"], 2),
+        new Pregunta("¿Qué monumento NO forma parte de la ruta 'Sevilla Monumental y Triana'?", ["Real Alcázar de Sevilla", "Catedral de Sevilla", "Metropol Parasol", "Palacio de San Telmo", "Hospital de los Venerables"], 2),
+        new Pregunta("¿Qué tipo de aceituna se menciona en la sección de gastronomía?", ["Kalamata", "Gordal", "Arbequina", "Picual", "Cornicabra"], 1),
+        new Pregunta("¿Cómo se llama el pequeño bocadillo típico mencionado en la web?", ["Tapa", "Pincho", "Montadito", "Bocata", "Ración"], 2),
+        new Pregunta("¿Qué famoso parque se recorre en una de las rutas en bicicleta?", ["Parque del Retiro", "Parque de María Luisa", "Parque Güell", "Parque del Oeste", "Casa de Campo"], 1),
+        new Pregunta("¿Qué edificio histórico es un antiguo colegio de mareantes?", ["Hospital de los Venerables", "Palacio de San Telmo", "Costurero de la Reina", "Real Parroquia de Señora Santa Ana", "Torre del Oro"], 1)
     ];
     new JuegoTuristico(document.querySelector("form"), preguntas).iniciar();
 });

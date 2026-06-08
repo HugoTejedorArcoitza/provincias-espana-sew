@@ -68,6 +68,7 @@ $app = Controlador::ejecutar();
                     <?php if (count($app->datosReservas) === 0): ?>
                         <p>No tienes reservas activas.</p>
                     <?php else: ?>
+
                         <table>
                             <caption>Tus actividades reservadas</caption>
                             <thead>
@@ -82,15 +83,15 @@ $app = Controlador::ejecutar();
                             <tbody>
                                 <?php foreach ($app->datosReservas as $reserva): ?>
                                     <tr>
-                                        <td><?php echo $reserva['nombre']; ?></td>
-                                        <td><?php echo $reserva['estado']; ?></td>
-                                        <td><?php echo $reserva['plazas']; ?></td>
+                                        <td><?php echo htmlspecialchars($reserva['nombre']); ?></td>
+                                        <td><?php echo htmlspecialchars($reserva['estado']); ?></td>
+                                        <td><?php echo (int)$reserva['plazas']; ?></td>
                                         <td><?php echo number_format((float)$reserva['presupuesto'], 2, ',', '.'); ?> €</td>
                                         <td>
                                             <?php if ($reserva['estado'] === 'Confirmada'): ?>
                                                 <form action="reservas.php" method="post">
                                                     <input type="hidden" name="accion" value="anular" />
-                                                    <input type="hidden" name="reserva" value="<?php echo $reserva['id_reserva']; ?>" />
+                                                    <input type="hidden" name="reserva" value="<?php echo (int)$reserva['id_reserva']; ?>" />
                                                     <button type="submit">Anular</button>
                                                 </form>
                                             <?php endif; ?>
@@ -99,19 +100,40 @@ $app = Controlador::ejecutar();
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
+
                     <?php endif; ?>
                 </article>
 
                 <article>
                     <h3>Nueva Reserva</h3>
+
+                    <h4>Catálogo de actividades</h4>
+                    <ul>
+                        <?php foreach ($app->datosRecursos as $recurso):
+                            // Extraemos las marcas de tiempo una sola vez para que sea más limpio
+                            $tInicio = strtotime($recurso['inicio']);
+                            $tFin = strtotime($recurso['fin']);
+                        ?>
+                            <li>
+                                <strong><?php echo htmlspecialchars($recurso['nombre']); ?>:</strong>
+                                <?php echo number_format((float)$recurso['precio'], 2, ',', '.'); ?> €
+                                (<?php echo (int)$recurso['plazas']; ?> plazas disponibles)<br>
+
+                                <em>Cuándo: <?php echo date('d/m/Y', $tInicio); ?>, de <?php echo date('H:i', $tInicio); ?> a <?php echo date('H:i', $tFin); ?></em>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
                     <form action="reservas.php" method="post">
                         <input type="hidden" name="accion" value="reserva" />
                         <label>Recurso:
                             <select name="recurso" required>
                                 <option value="" disabled selected>Selecciona un recurso...</option>
                                 <?php foreach ($app->datosRecursos as $recurso): ?>
-                                    <option value="<?php echo $recurso['id_recurso']; ?>">
-                                        <?php echo htmlspecialchars($recurso['nombre']); ?> (<?php echo $recurso['precio']; ?>€) - Plazas: <?php echo $recurso['plazas']; ?>
+                                    <option value="<?php echo (int)$recurso['id_recurso']; ?>">
+                                        [<?php echo date('d/m', strtotime($recurso['inicio'])); ?>]
+                                        <?php echo htmlspecialchars($recurso['nombre']); ?>
+                                        (<?php echo number_format((float)$recurso['precio'], 2, ',', '.'); ?> €) - Plazas: <?php echo (int)$recurso['plazas']; ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

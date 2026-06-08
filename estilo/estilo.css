@@ -1,235 +1,162 @@
 /* Especificidad: (0,0,1) */
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f7f3ed;
-    color: #1f2933;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f7f3ed;
+  color: #1f2933;
 }
 
 /* Especificidad: (0,0,1) */
 header {
-    background-color: #004f59;
-    color: #ffffff;
+  background-color: #004f59;
+  color: #ffffff;
 }
 
 /* Especificidad: (0,0,3) */
 header h1 a {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-/* Especificidad: (0,0,2) */
-/* El enlace hereda el fondo oscuro del header; el color blanco garantiza contraste AAA sin redefinir fondo. */
-nav a {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-/* Especificidad: (0,1,2). Excepción permitida para marcar el enlace activo del menú. */
-nav a.activo {
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-/* Especificidad: (0,0,2) */
-/* Las migas de pan heredan el fondo general del body/main; solo se ajusta el color para jerarquía visual. */
-body > p {
-    color: #5b6670;
-    font-size: 0.9em;
-}
-
-/* Especificidad: (0,0,3) */
-/* El enlace de la ruta de navegación hereda el fondo del contenedor y conserva contraste suficiente. */
-body > p a {
-    color: #005a8d;
-}
-
-/* Especificidad: (0,0,1) */
-main {
-    background-color: #ffffff;
-    color: #1f2933;
-}
-
-/* Especificidad: (0,0,1) */
-/* El fondo ya está definido en main; solo se fija el color del título para mantener coherencia visual. */
-h2 {
-    color: #004f59;
-}
-
-/* Especificidad: (0,0,1) */
-/* El fondo heredado del contenedor es suficiente; el color del subtítulo aporta contraste y jerarquía. */
-h3 {
-    color: #7a3b00;
-}
-
-/* Especificidad: (0,0,1) */
-/* Se mantiene el fondo heredado del área principal y se define solo el color del encabezado. */
-h4 {
-    color: #004f59;
-}
-
-/* Especificidad: (0,0,1) */
-/* Los enlaces se muestran sobre fondos ya definidos por sus contenedores; aquí solo se normaliza el color. */
-a {
-    color: #005a8d;
-}
-
-/* Especificidad: (0,0,1) */
-button {
-    background-color: #006d75;
-    color: #ffffff;
-    border: 0.12em solid #004f59;
-    font: inherit;
-    cursor: pointer;
-}
-
-/* Especificidad: (0,1,1) */
-button:disabled {
-    background-color: #6f7c82;
-    color: #ffffff;
-    cursor: not-allowed;
+  color: #ffffff; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
+  text-decoration: none;
 }
 
 /* Especificidad: (0,0,1) */
 table {
-    border-collapse: collapse;
+  border-collapse: collapse;
+  background-color: #ffffff;/* Advertencia W3C: Color heredado del elemento ancestro/body. */
 }
 
-/* Especificidad: (0,0,1) */
-caption {
-    font-weight: bold;
-}
-
-/* Especificidad: (0,0,1) */
-th {
-    background-color: #004f59;
-    color: #ffffff;
-    border: 0.08em solid #8a949c;
+/* Especificidad: (0,0,2) */
+td button {
+  color: #ffffff; /* Fondo heredado del elemento ancestro/body. */
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
 /* Especificidad: (0,0,1) */
 td {
-    border: 0.08em solid #8a949c;
+  border: 0.06em solid #ccc;
+}
+
+/* Especificidad: (0,0,1) */
+th {
+  background-color: #004f59;
+  color: #ffffff;
+  border: 0.08em solid #8a949c;
+}
+
+/* Especificidad: (0,0,2) */
+nav a {
+  color: #ffffff; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
+  text-decoration: none;
+}
+
+/* Especificidad: (0,1,2). Excepción permitida para marcar el enlace activo del menú. */
+nav a.activo {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Especificidad: (0,0,2) */
+body > p {
+  color: #5b6670; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
+  font-size: 0.9em;
+}
+
+/* Especificidad: (0,0,3) */
+body > p a {
+  color: #005a8d; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
+}
+
+/* Especificidad: (0,0,1) */
+main {
+  background-color: #ffffff;
+  color: #1f2933;
+}
+
+/* Especificidad: (0,0,1) */
+h2 {
+  color: #004f59; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
+}
+
+/* Especificidad: (0,0,1) */
+h3 {
+  color: #7a3b00; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
+}
+
+/* Especificidad: (0,0,1) */
+h4 {
+  color: #004f59; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
+}
+
+/* Especificidad: (0,0,1) */
+a {
+  color: #005a8d; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
+}
+
+/* Especificidad: (0,0,1) */
+button {
+  background-color: #006d75;
+  color: #ffffff;
+  border: 0.12em solid #004f59;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Especificidad: (0,1,1) */
+button:disabled {
+  background-color: #6f7c82; /* Advertencia W3C: Color heredado del elemento ancestro/body.. */
+  cursor: not-allowed;
+}
+
+/* Especificidad: (0,0,1) */
+select {
+  font-family: inherit;
+  font-size: 0.9rem; /* Tamaño fluido usando rem */
 }
 
 /* Especificidad: (0,0,1) */
 figure {
-    background-color: #eef6f4;
-    color: #1f2933;
+  background-color: #eef6f4;
+  color: #1f2933;
 }
 
 /* Especificidad: (0,0,1) */
 figcaption {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 /* Especificidad: (0,0,1) */
-video {
-    background-color: #000000;
-    color: #ffffff;
+caption {
+  font-weight: bold;
 }
 
 /* Especificidad: (0,0,1) */
 fieldset {
-    border: 0.08em solid #8a949c;
+  border: 0.08em solid #8a949c;
 }
 
 /* Especificidad: (0,0,1) */
-/* El legend hereda el fondo del formulario y se ajusta únicamente el color para reforzar legibilidad. */
 legend {
-    font-weight: bold;
-    color: #004f59;
+  font-weight: bold;
+  color: #004f59; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
 }
 
 /* Especificidad: (0,0,1) */
 footer {
-    background-color: #263238;
-    color: #ffffff;
-}
-
-/* --- COLORES DE MAPAS Y SVGs --- */
-/* Especificidad: (0,0,3) */
-article figure:nth-of-type(1) {
-    border: 0.12em solid #8a949c;
-}
-
-/* Especificidad: (0,0,3) */
-/* La figura actúa como contenedor estructural; el fondo delimita el bloque y el texto hereda color del contexto. */
-article figure:nth-of-type(2) {
-    border: 0.12em solid #8a949c;
-    background-color: #eef6f4;
-}
-
-/* --- RESTO DE REGLAS DE CONTENIDO --- */
-/* Especificidad: (0,0,2) */
-article > div {
-    background-color: #e6eef1;
-    color: #1f2933;
-    border: 0.08em solid #8a949c;
-}
-
-/* Especificidad: (0,0,3) */
-article > div img {
-    border: 0;
-}
-
-/* Especificidad: (0,0,3) */
-/* El SVG gestiona sus propios colores internos; el fondo de apoyo mejora contraste sin afectar al contenido vectorial. */
-article > div svg {
-    background-color: rgba(255, 255, 255, 0.82);
-}
-
-/* Especificidad: (0,0,3) */
-article > div p {
-    background-color: #ffffff;
-    color: #1f2933;
-}
-
-/* Especificidad: (0,0,3) */
-section article svg {
-    border: 0.08em solid #8a949c;
-}
-
-/* Especificidad: (0,0,1) */
-output {
-    background-color: #eef6f4;
-    color: #1f2933;
-    font-weight: bold;
-}
-
-/* Especificidad: (0,0,1) */
-input {
-    accent-color: #006d75;
-}
-
-/* Especificidad: (0,0,2) */
-tbody tr {
-    background-color: #ffffff;
-    color: #1f2933;
+  background-color: #263238;
+  color: #ffffff;
 }
 
 /* Especificidad: (0,1,2) */
 tbody tr:nth-child(even) {
-    background-color: #eef6f4;
-    color: #1f2933;
-}
-
-/* Especificidad: (0,0,3) */
-article figure img {
-    max-height: 20em;
-}
-
-/* Especificidad: (0,0,2) */
-section > p {
-    line-height: 1.55;
-}
-
-/* Especificidad: (0,0,2) */
-article > p {
-    line-height: 1.55;
+  background-color: #eef6f4; /* Advertencia W3C: Color heredado del elemento ancestro/body.. */
 }
 
 /* Especificidad: (0,0,1) */
-/* El strong se resalta sobre el fondo heredado del texto circundante, manteniendo énfasis semántico y contraste AAA. */
 strong {
-    color: #202124;
+  color: #202124; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
 }
+
+/* Especificidad: (0,0,1) */
+article {
+  border-bottom: 0.1em solid #222222d8;
+}
+
