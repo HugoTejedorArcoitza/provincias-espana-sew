@@ -42,10 +42,11 @@ td {
 
 
 /* Especificidad: (0,0,1) */
-th, td {
- padding: 0.5rem;
- border: 0.06em solid #ccc;
- text-align: left;
+
+td, th {
+    word-wrap: break-word; /* Permite que el texto largo salte de línea */
+    overflow-wrap: break-word;
+    hyphens: auto; /* Corta palabras largas si es necesario */
 }
 /* Especificidad: (0,0,1) */
 th {
@@ -83,6 +84,7 @@ main {
     background-color: #ffffff;
     color: #1f2933;
 }
+
 
 /* Especificidad: (0,0,1) */
 /* El fondo ya está definido en main; solo se fija el color del título para mantener coherencia visual. */
@@ -126,7 +128,8 @@ button:disabled {
 
 /* Especificidad: (0,0,1) */
 table {
-    border-collapse: collapse;
+    table-layout: fixed; /* Obliga a la tabla a respetar el ancho del contenedor */
+    width: 100%;
 }
 
 /* Especificidad: (0,0,1) */
@@ -264,7 +267,7 @@ article > p {
 }
 
 /* Especificidad: (0,0,1) */
-/* El strong se resalta sobre el fondo heredado del texto circundante, manteniendo énfasis semántico y contraste AAA. */
+
 strong {
     color: #202124;
 }

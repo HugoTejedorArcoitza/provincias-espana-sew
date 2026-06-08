@@ -44,6 +44,13 @@ main {
     margin: 1em auto;
     padding: 1.5em 5vw;
 }
+/*Especificidad: (0,0,2)*/
+main section > article > table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
 /* Especificidad: (0,0,2) */
 section div, article div {
     overflow-x: auto;
