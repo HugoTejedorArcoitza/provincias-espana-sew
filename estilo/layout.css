@@ -13,7 +13,7 @@ header {
   padding: 1em 5vw;
 }
 
-/* Especificidad: (0,0,2) */
+/* Especificidad: (0,0,4) */
 header h1 {
   margin: 0;
   font-size: 1.8rem;
@@ -26,14 +26,20 @@ nav {
   gap: 1rem;
 }
 
-/* Especificidad: (0,0,2) */
+/* Especificidad: (0,0,4) */
 /* Excepción permitida por rúbrica para mapas dinámicos */
-article div {
+article > figure > div {
   width: 100%;
   height: 35rem; /* Lienzo necesario para que Google Maps pueda representar el mapa dinámico. */
   margin: 1.5em 0;
   overflow: hidden;
   background-color: #eef6f4;
+}
+
+/* Especificidad: (0,0,5) */
+article > figure > div img {
+  max-width: none;
+  margin: 0;
 }
 
 /* Especificidad: (0,0,1) */
@@ -59,9 +65,9 @@ main {
   padding: 1.5em 5vw;
 }
 
-/* Especificidad: (0,0,3) */
+/* Especificidad: (0,0,5) */
 /* Contenedor que evita el scroll horizontal de la página */
-main section div {
+main section article > figure > div {
   width: 100%;
   overflow-x: auto;
 }
@@ -201,7 +207,7 @@ select {
     gap: 0.5rem; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */ /* Reducimos un poco el hueco entre ellas en móvil */
   }
 
-  /* Especificidad: (0,0,2) */
+  /* Especificidad: (0,0,4) */
   nav a {
     display: block; /* Mejora la usabilidad en móvil: toda la línea es clickable */
     padding: 0.5em 0;
@@ -213,7 +219,7 @@ select {
   }
 
   /* Especificidad: (0,0,2) */
-  article > div {
+  article > figure > div {
     grid-template-columns: repeat(2, 1fr); /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 }
