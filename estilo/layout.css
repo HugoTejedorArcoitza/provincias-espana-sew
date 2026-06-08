@@ -1,7 +1,5 @@
 /* Especificidad: (0,0,1) */
-body {
-    margin: 0;
-}
+body { margin: 0; }
 
 /* Especificidad: (0,0,1) */
 header {
@@ -15,54 +13,37 @@ header {
 
 /* Especificidad: (0,0,2) */
 header h1 {
-    margin: 0;
-    font-size: 1.8rem;
-}
+margin: 0;
+font-size: 1.8rem; }
 
 /* Especificidad: (0,0,1) */
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-}
+nav { display:
+flex;
+flex-wrap: wrap;
+gap: 0.75rem; }
 
 /* Especificidad: (0,0,2) */
-nav a {
-    padding: 0.35em 0;
-}
+nav a { padding: 0.35em 0; }
 
 /* Especificidad: (0,0,2) */
 body > p {
-    margin: 1em auto 0;
-    max-width: 72rem;
-    padding: 0 5vw;
-}
+margin: 1em auto 0; max-width: 72rem; padding: 0 5vw; }
 
 /* Especificidad: (0,0,1) */
-main {
-    max-width: 72rem;
-    margin: 1em auto;
-    padding: 1.5em 5vw;
-}
-/*Especificidad: (0,0,2)*/
-main section > article > table {
+main { max-width: 72rem; margin: 1em auto; padding: 1.5em 5vw; }
+
+/* Especificidad: (0,0,2) */
+main section > article > table, section div, article div {
     display: block;
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-}
-/* Especificidad: (0,0,2) */
-section div, article div {
-    overflow-x: auto;
-    width: 100%;
-    margin-bottom: 1rem; /* Espaciado entre bloques (layout) */
-}
-/* Especificidad: (0,0,1) */
-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
-/* CORRECCIÓN: Unificadas las reglas duplicadas de article en una sola declaración */
+/* Especificidad: (0,0,1) */
+section { margin-bottom: 2rem; }
+
 /* Especificidad: (0,0,1) */
 article {
     border-bottom: 0.1em solid #222222d8;
@@ -79,100 +60,44 @@ article li img {
 }
 
 /* Especificidad: (0,0,1) */
-figure {
-    margin: 1em 0;
-    padding: 1rem;
-}
+figure { margin: 1em 0; padding: 1rem; }
 
 /* Especificidad: (0,0,2) */
-figure img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
-}
+figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 
 /* Especificidad: (0,0,1) */
-figcaption {
-    margin-top: 0.6rem;
-}
+figcaption { margin-top: 0.6rem; }
 
 /* Especificidad: (0,0,1) */
-button {
-    min-width: 8rem;
-    margin: 0.4em 0.4em 0.4em 0;
-    padding: 0.65em 1rem;
-}
+button { min-width: 8rem; margin: 0.4em 0.4em 0.4em 0; padding: 0.65em 1rem; }
 
 /* Especificidad: (0,0,1) */
-table {
-    width: 100%;
-    margin: 1em 0;
-}
+caption { padding: 0.6rem; }
 
 /* Especificidad: (0,0,1) */
-caption {
-    padding: 0.6rem;
-}
+video { display: block; width: 100%; max-width: 48rem; height: auto; }
 
 /* Especificidad: (0,0,1) */
-th {
-    padding: 0.65rem;
-}
+form { display: grid; gap: 1rem; }
 
 /* Especificidad: (0,0,1) */
-td {
-    padding: 0.65rem;
-}
+fieldset { margin: 0; padding: 1rem; }
 
 /* Especificidad: (0,0,1) */
-video {
-    display: block;
-    width: 100%;
-    max-width: 48rem;
-    height: auto;
-}
+label { display: block; margin: 0.45em 0; }
 
 /* Especificidad: (0,0,1) */
-form {
-    display: grid;
-    gap: 1rem;
-}
+footer { padding: 1em 5vw; text-align: center; }
 
-/* Especificidad: (0,0,1) */
-fieldset {
-    margin: 0;
-    padding: 1rem;
-}
-
-/* Especificidad: (0,0,1) */
-label {
-    display: block;
-    margin: 0.45em 0;
-}
-
-/* Especificidad: (0,0,1) */
-footer {
-    padding: 1em 5vw;
-    text-align: center;
-}
-
-/* --- REGLAS DE MAPAS Y SVGs --- */
-
-/* CORRECCIÓN: Se unificó la regla del div del mapa y se justificó el uso de !important */
-/* Especificidad (0,0,4): Contenedor interactivo hijo directo de la figura */
-/* El mapa hereda el color de su contenido interno y el fondo se usa como soporte visual del contenedor. */
+/* --- REGLAS DE MAPAS --- */
 article figure:nth-of-type(1) > div {
     height: 25rem;
     width: 100%;
     position: relative;
     overflow: hidden;
-    /* El div ya es de bloque por defecto; se mantiene así para evitar advertencias de W3C sin usar !important. */
     display: block;
 }
 
-/* Especificidad: (0,0,4) */
-/* Las imágenes del mapa son recursos gráficos que heredan contraste del contenedor sin color textual propio. */
 article figure:nth-of-type(1) > div img {
     max-width: none;
     max-height: none;
@@ -182,39 +107,13 @@ article figure:nth-of-type(1) > div img {
     border: none;
 }
 
-/* Especificidad (0,0,3) */
-/* La figura del mapa funciona como bloque estructural; el fondo se define para delimitar la zona interactiva. */
-article figure:nth-of-type(1) {
-    width: 75%;
-    margin: 1em auto;
-    padding: 0;
-    border: 0.12em solid #8a949c;
-}
+article figure:nth-of-type(1) { width: 75%; margin: 1em auto; padding: 0; }
 
-/* --- CONTENEDOR DEL SVG --- */
-/* Especificidad (0,0,3) */
-/* El SVG es un bloque gráfico autónomo; el contenedor aporta fondo y el color se define dentro del propio SVG. */
-article figure:nth-of-type(2) {
-    width: 75%;
-    margin: 1em auto 3em auto;
-    padding: 1rem;
-    overflow-x: auto;
-}
+article figure:nth-of-type(2) { width: 75%; margin: 1em auto 3em auto; padding: 1rem; overflow-x: auto; }
 
-/* CORRECCIÓN: Se eliminó la declaración duplicada exacta del SVG */
-/* Especificidad: (0,0,3) */
-/* El SVG gestiona el color internamente; este fondo solo mejora la separación visual con el resto del contenido. */
-article figure:nth-of-type(2) svg {
-    width: 100%;
-    height: auto;
-    display: block;
-    overflow: visible;
-}
+article figure:nth-of-type(2) svg { width: 100%; height: auto; display: block; overflow: visible; }
 
 /* --- HIJOS DIRECTOS --- */
-
-/* Especificidad: (0,0,2) */
-/* El contenedor de mapas dinámicos mantiene fondo y posición; el color textual lo aportan los elementos internos. */
 article > div {
     position: relative;
     display: grid;
@@ -224,123 +123,35 @@ article > div {
     margin: 1em 0;
 }
 
-/* Especificidad: (0,0,3) */
-/* Las imágenes del contenedor heredan el contraste del bloque padre; no necesitan color textual propio. */
-article > div img {
-    width: 100%;
-    height: 100%;
-}
+article > div img { width: 100%; height: 100%; }
 
-/* Especificidad: (0,0,3) */
-/* El SVG se posiciona de forma absoluta sobre el contenedor, mientras el contenido visual define sus propios colores. */
-article > div svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-}
+article > div svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 
-/* Especificidad: (0,0,3) */
-/* El texto superpuesto sobre mapas/herencias mantiene contraste con el fondo ya definido en el contenedor. */
-article > div p {
-    position: absolute;
-    left: 1rem;
-    bottom: 1rem;
-    margin: 0;
-    padding: 0.5rem;
-}
+article > div p { position: absolute; left: 1rem; bottom: 1rem; margin: 0; padding: 0.5rem; }
 
-/* Especificidad: (0,0,3) */
-section article svg {
-    display: block;
-    width: 100%;
-    max-width: 56rem;
-    height: auto;
-    margin: 1em 0;
-}
+section article svg { display: block; width: 100%; max-width: 56rem; height: auto; margin: 1em 0; }
 
-/* Especificidad: (0,0,1) */
-output {
-    display: block;
-    padding: 1rem;
-}
+output { display: block; padding: 1rem; }
 
-/* Especificidad: (0,0,2) */
-section article {
-    break-inside: avoid;
-}
+section article { break-inside: avoid; }
 
-/* Especificidad: (0,0,1) */
-ol {
-    padding-left: 1.5rem;
-}
+ol, ul { padding-left: 1.5rem; }
 
-/* Especificidad: (0,0,1) */
-ul {
-    padding-left: 1.5rem;
-}
+dl { display: grid; grid-template-columns: 12em 1fr; gap: 0.5em 1rem; }
 
-/* Especificidad: (0,0,1) */
-dl {
-    display: grid;
-    grid-template-columns: 12em 1fr;
-    gap: 0.5em 1rem;
-}
+dt { font-weight: bold; }
 
-/* Especificidad: (0,0,1) */
-dt {
-    font-weight: bold;
-}
+dd { margin: 0; }
 
-/* Especificidad: (0,0,1) */
-dd {
-    margin: 0;
-}
-
-/* Media query para tableta (45em = 720px aprox). */
 @media (max-width: 45em) {
-    /* Especificidad: (0,0,1) */
-    header {
-        /* Redefinición necesaria por la media query de tableta para apilar el encabezado verticalmente. */
-        flex-direction: column;
-        /* Redefinición necesaria por la media query de tableta para alinear el bloque al inicio. */
-        align-items: flex-start;
-    }
-
-    /* Especificidad: (0,0,1) */
-    nav {
-        flex-direction: column;
-    }
-
-    /* Especificidad: (0,0,1) */
-    dl {
-        /* Redefinición necesaria por la media query de tableta. */
-        grid-template-columns: 1fr;
-    }
-
-    /* Especificidad: (0,0,2) */
-    article > div {
-        /* Redefinición necesaria por la media query de tableta. */
-        grid-template-columns: repeat(2, 1fr);
-    }
+    header { flex-direction: column; align-items: flex-start; }
+    nav { flex-direction: column; }
+    dl { grid-template-columns: 1fr; }
+    article > div { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* Media query para móvil (30em = 480px aprox). */
 @media (max-width: 30em) {
-    /* Especificidad: (0,0,1) */
-    main {
-        /* Redefinición necesaria por la media query de móvil para reducir el espacio lateral y mejorar la lectura. */
-        padding: 1em 4vw;
-    }
-
-    /* Especificidad: (0,0,2) */
-    article > div {
-        /* Redefinición necesaria por la media query de móvil. */
-        grid-template-columns: 1fr;
-    }
-
-    /* Especificidad: (0,0,1) */
-    button {
-        width: 100%;
-    }
+    main { padding: 1em 4vw; }
+    article > div { grid-template-columns: 1fr; }
+    button { width: 100%; }
 }

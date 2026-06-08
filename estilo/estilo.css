@@ -17,44 +17,7 @@ header h1 a {
     text-decoration: none;
 }
 
-/* Especificidad: (0,0,1) */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff; /* Estilo visual */
-}
-
 /* Especificidad: (0,0,2) */
-td button {
- width: 100%;
- padding: 0.5em 0.75em;
- box-sizing: border-box;
- cursor: pointer;
- font-size: 0.9rem;
-}
-
-
-/* Especificidad: (0,0,1) */
-td {
- white-space: normal;
- min-width: 5em;
-}
-
-
-/* Especificidad: (0,0,1) */
-
-td, th {
-    word-wrap: break-word; /* Permite que el texto largo salte de línea */
-    overflow-wrap: break-word;
-    hyphens: auto; /* Corta palabras largas si es necesario */
-}
-/* Especificidad: (0,0,1) */
-th {
-    background-color: #f2f2f2; /* Estilo visual */
-}
-
-/* Especificidad: (0,0,2) */
-/* El enlace hereda el fondo oscuro del header; el color blanco garantiza contraste AAA sin redefinir fondo. */
 nav a {
     color: #ffffff;
     text-decoration: none;
@@ -67,14 +30,12 @@ nav a.activo {
 }
 
 /* Especificidad: (0,0,2) */
-/* Las migas de pan heredan el fondo general del body/main; solo se ajusta el color para jerarquía visual. */
 body > p {
     color: #5b6670;
     font-size: 0.9em;
 }
 
 /* Especificidad: (0,0,3) */
-/* El enlace de la ruta de navegación hereda el fondo del contenedor y conserva contraste suficiente. */
 body > p a {
     color: #005a8d;
 }
@@ -85,27 +46,22 @@ main {
     color: #1f2933;
 }
 
-
 /* Especificidad: (0,0,1) */
-/* El fondo ya está definido en main; solo se fija el color del título para mantener coherencia visual. */
 h2 {
     color: #004f59;
 }
 
 /* Especificidad: (0,0,1) */
-/* El fondo heredado del contenedor es suficiente; el color del subtítulo aporta contraste y jerarquía. */
 h3 {
     color: #7a3b00;
 }
 
 /* Especificidad: (0,0,1) */
-/* Se mantiene el fondo heredado del área principal y se define solo el color del encabezado. */
 h4 {
     color: #004f59;
 }
 
 /* Especificidad: (0,0,1) */
-/* Los enlaces se muestran sobre fondos ya definidos por sus contenedores; aquí solo se normaliza el color. */
 a {
     color: #005a8d;
 }
@@ -128,8 +84,10 @@ button:disabled {
 
 /* Especificidad: (0,0,1) */
 table {
-    table-layout: fixed; /* Obliga a la tabla a respetar el ancho del contenedor */
     width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    table-layout: fixed;
 }
 
 /* Especificidad: (0,0,1) */
@@ -142,11 +100,28 @@ th {
     background-color: #004f59;
     color: #ffffff;
     border: 0.08em solid #8a949c;
+    text-align: left;
+    padding: 0.5rem;
 }
 
 /* Especificidad: (0,0,1) */
 td {
     border: 0.08em solid #8a949c;
+    padding: 0.5rem;
+    white-space: normal;
+    min-width: 5em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Especificidad: (0,0,2) */
+td button {
+    width: 100%;
+    padding: 0.5em 0.75em;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
 /* Especificidad: (0,0,1) */
@@ -172,7 +147,6 @@ fieldset {
 }
 
 /* Especificidad: (0,0,1) */
-/* El legend hereda el fondo del formulario y se ajusta únicamente el color para reforzar legibilidad. */
 legend {
     font-weight: bold;
     color: #004f59;
@@ -186,14 +160,12 @@ footer {
 
 /* --- COLORES DE MAPAS Y SVGs --- */
 /* Especificidad: (0,0,3) */
-article figure:nth-of-type(1) {
+article figure:nth-of-type(1), article figure:nth-of-type(2) {
     border: 0.12em solid #8a949c;
 }
 
 /* Especificidad: (0,0,3) */
-/* La figura actúa como contenedor estructural; el fondo delimita el bloque y el texto hereda color del contexto. */
 article figure:nth-of-type(2) {
-    border: 0.12em solid #8a949c;
     background-color: #eef6f4;
 }
 
@@ -211,7 +183,6 @@ article > div img {
 }
 
 /* Especificidad: (0,0,3) */
-/* El SVG gestiona sus propios colores internos; el fondo de apoyo mejora contraste sin afectar al contenido vectorial. */
 article > div svg {
     background-color: rgba(255, 255, 255, 0.82);
 }
@@ -257,17 +228,11 @@ article figure img {
 }
 
 /* Especificidad: (0,0,2) */
-section > p {
-    line-height: 1.55;
-}
-
-/* Especificidad: (0,0,2) */
-article > p {
+section > p, article > p {
     line-height: 1.55;
 }
 
 /* Especificidad: (0,0,1) */
-
 strong {
     color: #202124;
 }
