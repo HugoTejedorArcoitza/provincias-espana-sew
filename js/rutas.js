@@ -26,6 +26,8 @@ class GestorRutasTuristicas {
 
             const article = $("<article>");
             article.append($("<h3>").text(nombre));
+
+            // Excepción aplicada: Uso permitido de <div> para mapas dinámicos
             const divMapa = $("<div>");
             article.append(divMapa);
             this.contenedor.append(article);
@@ -35,13 +37,25 @@ class GestorRutasTuristicas {
     }
 
     inicializarMapa(contenedor, archivoKml) {
-        const mapa = new google.maps.Map(contenedor, { zoom: 12, center: { lat: 37.3891, lng: -5.9845 } });
+        const mapa = new google.maps.Map(contenedor, {
+            zoom: 12,
+            center: { lat: 37.3891, lng: -5.9845 },
+            mapTypeId: "terrain"
+        });
+
         const lectorKml = new google.maps.KmlLayer({
             url: window.location.origin + "/xml/" + archivoKml,
             map: mapa,
             preserveViewport: false
         });
 
+        // REGLA 6 APLICADA A KML: Si falla la lectura en local, mostramos el error semántico
+        google.maps.event.addListenerOnce(lectorKml, 'status_changed', () => {
+            const estado = lectorKml.getStatus();
+            if (estado !== 'OK') {
+                $(contenedor).after($("<p>").html(`<strong>Error KML (${estado}):</strong> El archivo ${archivoKml} no pudo ser cargado por Google. Recuerda que para KmlLayer el archivo debe estar desplegado en un servidor público.`));
+            }
+        });
 
         google.maps.event.addListenerOnce(lectorKml, 'defaultviewport_changed', () => {
             const limites = lectorKml.getDefaultViewport();
