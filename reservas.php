@@ -113,7 +113,9 @@ $app = Controlador::ejecutar();
                             <li>
                                 <strong><?php echo htmlspecialchars($recurso['nombre']); ?>:</strong>
                                 <?php echo number_format((float)$recurso['precio'], 2, ',', '.'); ?> €
-                                (<?php echo (int)$recurso['plazas']; ?> plazas disponibles)
+                                (<?php echo (int)$recurso['plazas']; ?> plazas disponibles)<br>
+                                <em>Cuándo: Del <?php echo date('d/m/Y a las H:i', strtotime($recurso['inicio'])); ?>
+                                hasta el <?php echo date('d/m/Y a las H:i', strtotime($recurso['fin'])); ?></em>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -125,7 +127,9 @@ $app = Controlador::ejecutar();
                                 <option value="" disabled selected>Selecciona un recurso...</option>
                                 <?php foreach ($app->datosRecursos as $recurso): ?>
                                     <option value="<?php echo (int)$recurso['id_recurso']; ?>">
-                                        <?php echo htmlspecialchars($recurso['nombre']); ?> (<?php echo number_format((float)$recurso['precio'], 2, ',', '.'); ?> €) - Plazas: <?php echo (int)$recurso['plazas']; ?>
+                                        [<?php echo date('d/m', strtotime($recurso['inicio'])); ?>]
+                                        <?php echo htmlspecialchars($recurso['nombre']); ?>
+                                        (<?php echo number_format((float)$recurso['precio'], 2, ',', '.'); ?> €) - Plazas: <?php echo (int)$recurso['plazas']; ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
