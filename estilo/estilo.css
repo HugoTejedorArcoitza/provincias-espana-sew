@@ -13,41 +13,26 @@ header {
 
 /* Especificidad: (0,0,3) */
 header h1 a {
-  color: #ffffff;
+  color: #ffffff; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
   text-decoration: none;
 }
 
 /* Especificidad: (0,0,1) */
 table {
-  width: 100%;
   border-collapse: collapse;
-  background-color: #ffffff;
-  table-layout: fixed; /* OBLIGATORIO: Evita que la tabla empuje el layout */
+  background-color: #ffffff;/* Advertencia W3C: Color heredado del elemento ancestro/body. */
 }
 
 /* Especificidad: (0,0,2) */
 td button {
-  width: 100%;
-  padding: 0.5em 0.75em;
-  box-sizing: border-box;
+  color: #000000; /* Fondo heredado del elemento ancestro/body. */
   cursor: pointer;
   font-size: 0.9rem;
 }
 
 /* Especificidad: (0,0,1) */
 td {
-  white-space: nowrap; /* Mantiene la integridad en celdas pequeñas */
-  overflow: hidden;
-  text-overflow: ellipsis; /* Corta texto largo con ... */
-  min-width: 3em;
-}
-
-/* Especificidad: (0,0,1) */
-th,
-td {
-  padding: 0.5rem;
   border: 0.06em solid #ccc;
-  text-align: left;
 }
 
 /* Especificidad: (0,0,1) */
@@ -59,7 +44,7 @@ th {
 
 /* Especificidad: (0,0,2) */
 nav a {
-  color: #ffffff;
+  color: #ffffff; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
   text-decoration: none;
 }
 
@@ -71,13 +56,13 @@ nav a.activo {
 
 /* Especificidad: (0,0,2) */
 body > p {
-  color: #5b6670;
+  color: #5b6670; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
   font-size: 0.9em;
 }
 
 /* Especificidad: (0,0,3) */
 body > p a {
-  color: #005a8d;
+  color: #005a8d; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
 }
 
 /* Especificidad: (0,0,1) */
@@ -88,16 +73,22 @@ main {
 
 /* Especificidad: (0,0,1) */
 h2 {
-  color: #004f59;
+  color: #004f59; /* Advertencia W3C: Fondo heredado del elemento ancestro/body. */
 }
+
+/* Especificidad: (0,0,1) */
 h3 {
-  color: #7a3b00;
+  color: #7a3b00; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
 }
+
+/* Especificidad: (0,0,1) */
 h4 {
-  color: #004f59;
+  color: #004f59; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
 }
+
+/* Especificidad: (0,0,1) */
 a {
-  color: #005a8d;
+  color: #005a8d; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
 }
 
 /* Especificidad: (0,0,1) */
@@ -111,41 +102,14 @@ button {
 
 /* Especificidad: (0,1,1) */
 button:disabled {
-  background-color: #6f7c82;
+  background-color: #6f7c82; /* Advertencia W3C: Color heredado del elemento ancestro/body.. */
   cursor: not-allowed;
 }
-/* Especificidad: (0,0,2) */
-td button {
-  width: 100%;
-  min-width: 0; /* ANULAMOS la restricción global de layout.css */
-  padding: 0.5em;
-  box-sizing: border-box;
-  cursor: pointer;
-  font-size: 0.9rem;
 
-  /* El recorte de texto */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 /* Especificidad: (0,0,1) */
 select {
-  width: 100%; /* Ocupará el ancho disponible de su contenedor (el label o el form) */
-  max-width: 100%; /* Medida de seguridad vital contra desbordamientos */
-  padding: 0.5em;
-  box-sizing: border-box; /* Evita que el padding sume tamaño extra y rompa el 100% */
   font-family: inherit;
   font-size: 0.9rem; /* Tamaño fluido usando rem */
-
-  /* El truco para que el texto seleccionado no ensanche la caja */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Si seleccionas una muy larga, mostrará "Degustación de tapas..." */
-}
-
-/* Especificidad: (0,0,1) */
-caption {
-  font-weight: bold;
 }
 
 /* Especificidad: (0,0,1) */
@@ -153,22 +117,14 @@ figure {
   background-color: #eef6f4;
   color: #1f2933;
 }
-/* Especificidad: (0,0,2) */
-/* Especificidad: (0,0,2) */
-td button {
-  width: 100%;
-  padding: 0.5em;
-  box-sizing: border-box;
-  cursor: pointer;
-  font-size: 0.9rem;
 
-  /* El recorte de texto */
-  white-space: nowrap; /* Obliga al texto a estar en una sola línea */
-  overflow: hidden; /* Oculta lo que se sale de los bordes del botón */
-  text-overflow: ellipsis; /* Añade los "..." al final si no cabe */
-}
 /* Especificidad: (0,0,1) */
 figcaption {
+  font-weight: bold;
+}
+
+/* Especificidad: (0,0,1) */
+caption {
   font-weight: bold;
 }
 
@@ -180,7 +136,7 @@ fieldset {
 /* Especificidad: (0,0,1) */
 legend {
   font-weight: bold;
-  color: #004f59;
+  color: #004f59; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
 }
 
 /* Especificidad: (0,0,1) */
@@ -191,10 +147,16 @@ footer {
 
 /* Especificidad: (0,1,2) */
 tbody tr:nth-child(even) {
-  background-color: #eef6f4;
+  background-color: #eef6f4; /* Advertencia W3C: Color heredado del elemento ancestro/body.. */
 }
 
 /* Especificidad: (0,0,1) */
 strong {
-  color: #202124;
+  color: #202124; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
 }
+
+/* Especificidad: (0,0,1) */
+article {
+  border-bottom: 0.1em solid #222222d8;
+}
+

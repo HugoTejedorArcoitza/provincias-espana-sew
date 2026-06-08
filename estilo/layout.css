@@ -20,6 +20,13 @@ header h1 {
 }
 
 /* Especificidad: (0,0,1) */
+nav {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+/* Especificidad: (0,0,1) */
 form {
   display: grid;
   /* Creamos 2 columnas idénticas para pantallas grandes */
@@ -51,7 +58,6 @@ main section div {
 
 /* Especificidad: (0,0,1) */
 article {
-  border-bottom: 0.1em solid #222222d8;
   padding-bottom: 2em;
   margin-bottom: 2em;
 }
@@ -97,6 +103,29 @@ label {
 table {
   width: 100%;
   margin: 1em 0;
+  table-layout: fixed; /* OBLIGATORIO: Evita que la tabla empuje el layout */
+}
+
+/* Especificidad: (0,0,1) */
+td {
+  white-space: nowrap; /* Mantiene la integridad en celdas pequeñas */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Corta texto largo con ... */
+  min-width: 3em;
+}
+
+/* Especificidad: (0,0,1) */
+th,
+td {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+/* Especificidad: (0,0,2) */
+td button {
+  width: 100%;
+  padding: 0.5em;
+  box-sizing: border-box;
 }
 
 /* Especificidad: (0,0,1) */
@@ -104,28 +133,43 @@ footer {
   padding: 1em 5vw;
   text-align: center;
 }
+
+/* Especificidad: (0,0,1) */
+select {
+  width: 100%; /* Ocupará el ancho disponible de su contenedor (el label o el form) */
+  max-width: 100%; /* Medida de seguridad vital contra desbordamientos */
+  padding: 0.5em;
+  box-sizing: border-box; /* Evita que el padding sume tamaño extra y rompa el 100% */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Si seleccionas una muy larga, mostrará "Degustación de tapas..." */
+}
 /* Media query para tableta (45em = 720px aprox) - RECUPERADA */
 @media (max-width: 45em) {
   /* Especificidad: (0,0,1) */
   header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: column; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
+    align-items: flex-start; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 
   /* Especificidad: (0,0,1) */
   nav {
-    flex-direction: column; /* LA RESTRICCIÓN: Navegación en columna */
+    flex-direction: column; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */ /* LA RESTRICCIÓN: Navegación en columna */
     width: 100%; /* Asegura que no se desborde */
   }
+
+  /* Especificidad: (0,0,1) */
   form {
     /* Obligamos a que pase a 1 sola columna */
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
+
   /* Especificidad: (0,0,1) */
   fieldset {
-    flex-direction: column; /* Apila las respuestas una debajo de otra en móvil/tableta */
-    gap: 0.5rem; /* Reducimos un poco el hueco entre ellas en móvil */
+    flex-direction: column; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */ /* Apila las respuestas una debajo de otra en móvil/tableta */
+    gap: 0.5rem; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */ /* Reducimos un poco el hueco entre ellas en móvil */
   }
+
   /* Especificidad: (0,0,2) */
   nav a {
     display: block; /* Mejora la usabilidad en móvil: toda la línea es clickable */
@@ -139,26 +183,27 @@ footer {
 
   /* Especificidad: (0,0,2) */
   article > div {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 }
+
 /* Media query para móvil (30em = 480px aprox). */
 @media (max-width: 30em) {
   /* Especificidad: (0,0,1) */
   button {
-    width: 100%;
+    width: 100%; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
+
   /* Media query para asegurar que en móviles muy pequeños el botón no desaparezca */
   /* Especificidad: (0,0,2) */
   td button {
-    font-size: 0.7rem; /* Reducimos la fuente solo en pantallas críticas */
-    padding: 0.3em 0.1em;
+    padding: 0.3em 0.1em; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 
   /* Reducimos padding en móviles para ganar espacio */
+  /* Especificidad: (0,0,1) */
   th,
   td {
-    padding: 0.2em;
-    font-size: 0.8rem;
+    padding: 0.2em; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 }
