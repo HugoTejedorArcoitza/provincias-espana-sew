@@ -44,8 +44,7 @@ figure { margin: 1em 0; padding: 1rem; }
 /* Especificidad: (0,0,2) */
 figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 
-/* Especificidad: (0,0,1) */
-button { min-width: 8rem; margin: 0.4em 0; padding: 0.65em 1rem; }
+
 
 /* Especificidad: (0,0,1) */
 table { width: 100%; margin: 1em 0; }

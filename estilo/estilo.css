@@ -105,7 +105,20 @@ button:disabled {
     background-color: #6f7c82;
     cursor: not-allowed;
 }
+/* Especificidad: (0,0,2) */
+td button {
+    width: 100%;
+    min-width: 0; /* ANULAMOS la restricción global de layout.css */
+    padding: 0.5em;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 0.9rem;
 
+    /* El recorte de texto */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /* Especificidad: (0,0,1) */
 caption { font-weight: bold; }
 
