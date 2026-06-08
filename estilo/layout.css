@@ -51,7 +51,36 @@ table { width: 100%; margin: 1em 0; }
 
 /* Especificidad: (0,0,1) */
 footer { padding: 1em 5vw; text-align: center; }
+/* Media query para tableta (45em = 720px aprox) - RECUPERADA */
+@media (max-width: 45em) {
+    /* Especificidad: (0,0,1) */
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
+    /* Especificidad: (0,0,1) */
+    nav {
+        flex-direction: column; /* LA RESTRICCIÓN: Navegación en columna */
+        width: 100%; /* Asegura que no se desborde */
+    }
+
+    /* Especificidad: (0,0,2) */
+    nav a {
+        display: block; /* Mejora la usabilidad en móvil: toda la línea es clickable */
+        padding: 0.5em 0;
+    }
+
+    /* Especificidad: (0,0,1) */
+    dl {
+        grid-template-columns: 1fr;
+    }
+
+    /* Especificidad: (0,0,2) */
+    article > div {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 /* Media query para móvil (30em = 480px aprox). */
 @media (max-width: 30em) {
     /* Especificidad: (0,0,1) */
