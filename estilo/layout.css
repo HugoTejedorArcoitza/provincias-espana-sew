@@ -29,29 +29,11 @@ nav {
 /* Especificidad: (0,0,2) */
 /* Excepción permitida por rúbrica para mapas dinámicos */
 article div {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
   width: 100%;
-  height: 35rem;
+  height: 35rem; /* Lienzo necesario para que Google Maps pueda representar el mapa dinámico. */
   margin: 1.5em 0;
   overflow: hidden;
   background-color: #eef6f4;
-}
-
-/* Especificidad: (0,0,3) */
-article div img {
-  width: 100%;
-  height: 100%;
-}
-
-/* Especificidad: (0,0,3) */
-article div svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 /* Especificidad: (0,0,1) */

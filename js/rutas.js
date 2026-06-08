@@ -10,6 +10,10 @@ class CoordenadaKml {
     esValida() {
         return Number.isFinite(this.longitud) && Number.isFinite(this.latitud);
     }
+
+    aGoogleMaps() {
+        return { lat: this.latitud, lng: this.longitud };
+    }
 }
 
 class LectorRutasXml {
@@ -35,6 +39,7 @@ class LectorRutasXml {
             lugarInicio: this.texto(rutaXml, "lugarInicio"),
             direccionInicio: this.texto(rutaXml, "direccionInicio"),
             recomendacion: this.texto(rutaXml, "recomendacion"),
+            inicio: this.coordenada(rutaXml.children("coordenada").first()),
             planimetria: this.texto(rutaXml, "planimetria"),
             altimetria: this.texto(rutaXml, "altimetria"),
             referencias: rutaXml.find("referencias referencia").map((_, nodo) => $(nodo).text().trim()).get(),
@@ -47,10 +52,19 @@ class LectorRutasXml {
         return {
             nombre: this.texto(hitoXml, "nombreHito"),
             descripcion: this.texto(hitoXml, "descripcionHito"),
+            coordenada: this.coordenada(hitoXml.children("coordenada").first()),
             distancia: distancia.text().trim(),
             unidades: distancia.attr("unidades") || "metros",
             fotos: hitoXml.find("galeriaFotos foto").map((_, nodo) => $(nodo).text().trim()).get()
         };
+    }
+
+    coordenada(nodo) {
+        return new CoordenadaKml(
+            nodo.children("longitud").first().text().trim(),
+            nodo.children("latitud").first().text().trim(),
+            nodo.children("altitud").first().text().trim()
+        );
     }
 
     texto(nodo, selector) {
@@ -58,41 +72,49 @@ class LectorRutasXml {
     }
 }
 
-class MapaOsmKml {
-    constructor(contenedor, archivoKml, nombreRuta) {
-        this.contenedor = contenedor;
-        this.archivoKml = archivoKml;
-        this.nombreRuta = nombreRuta;
-        this.zoom = 15;
-        this.tamanoTesela = 256;
-        this.dimensionTeselas = 3;
+class CargadorGoogleMaps {
+    constructor(claveApi) {
+        this.claveApi = claveApi;
+        this.promesa = null;
     }
 
     cargar() {
-        $.ajax({
-            url: `xml/${this.archivoKml}`,
-            dataType: "xml"
-        }).done((documentoKml) => this.dibujar(documentoKml))
-            .fail(() => this.mostrarError("No se pudo cargar el archivo KML de la ruta."));
-    }
-
-    dibujar(documentoKml) {
-        const coordenadas = this.extraerCoordenadas(documentoKml);
-        if (coordenadas.length === 0) {
-            this.mostrarError("El archivo KML no contiene coordenadas válidas.");
-            return;
+        if (window.google && window.google.maps) {
+            return $.Deferred().resolve(window.google.maps).promise();
+        }
+        if (!this.claveApi) {
+            return $.Deferred().reject("Falta la clave de Google Maps del proyecto.").promise();
+        }
+        if (this.promesa !== null) {
+            return this.promesa;
         }
 
-        const centro = this.centroGeografico(coordenadas);
-        const teselaCentro = this.coordenadaATesela(centro, this.zoom);
-        const origen = {
-            x: Math.floor(teselaCentro.x) - 1,
-            y: Math.floor(teselaCentro.y) - 1
-        };
+        const diferido = $.Deferred();
+        const nombreCallback = "inicializarGoogleMapsRutas";
+        window[nombreCallback] = () => diferido.resolve(window.google.maps);
 
-        this.contenedor.empty();
-        this.insertarTeselas(origen);
-        this.insertarTrazado(coordenadas, origen);
+        const script = document.createElement("script");
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(this.claveApi)}&callback=${nombreCallback}`;
+        script.async = true;
+        script.defer = true;
+        script.onerror = () => diferido.reject("No se pudo cargar la API de Google Maps.");
+        document.head.appendChild(script);
+
+        this.promesa = diferido.promise();
+        return this.promesa;
+    }
+}
+
+class LectorKml {
+    constructor(archivoKml) {
+        this.archivoKml = archivoKml;
+    }
+
+    cargar() {
+        return $.ajax({
+            url: `xml/${this.archivoKml}`,
+            dataType: "xml"
+        }).then((documentoKml) => this.extraerCoordenadas(documentoKml));
     }
 
     extraerCoordenadas(documentoKml) {
@@ -101,87 +123,75 @@ class MapaOsmKml {
         Array.prototype.forEach.call(nodos, (nodo) => {
             nodo.textContent.trim().split(/\s+/).forEach((tramo) => {
                 const partes = tramo.split(",");
-                const punto = new CoordenadaKml(partes[0], partes[1], partes[2]);
-                if (punto.esValida()) {
-                    coordenadas.push(punto);
+                const coordenada = new CoordenadaKml(partes[0], partes[1], partes[2]);
+                if (coordenada.esValida()) {
+                    coordenadas.push(coordenada);
                 }
             });
         });
         return coordenadas;
     }
+}
 
-    centroGeografico(coordenadas) {
-        const suma = coordenadas.reduce((acumulado, punto) => ({
-            longitud: acumulado.longitud + punto.longitud,
-            latitud: acumulado.latitud + punto.latitud
-        }), { longitud: 0, latitud: 0 });
-        return new CoordenadaKml(
-            suma.longitud / coordenadas.length,
-            suma.latitud / coordenadas.length,
-            0
-        );
+class MapaGoogleKml {
+    constructor(contenedor, ruta, cargadorGoogleMaps) {
+        this.contenedor = contenedor;
+        this.ruta = ruta;
+        this.cargadorGoogleMaps = cargadorGoogleMaps;
+        this.mapa = null;
     }
 
-    insertarTeselas(origen) {
-        for (let fila = 0; fila < this.dimensionTeselas; fila += 1) {
-            for (let columna = 0; columna < this.dimensionTeselas; columna += 1) {
-                const x = origen.x + columna;
-                const y = origen.y + fila;
-                const imagen = $("<img />").attr({
-                    src: `https://tile.openstreetmap.org/${this.zoom}/${x}/${y}.png`,
-                    alt: `Tesela cartográfica de OpenStreetMap para ${this.nombreRuta}`
-                });
-                this.contenedor.append(imagen);
-            }
+    cargar() {
+        this.cargadorGoogleMaps.cargar()
+            .done(() => this.cargarKml())
+            .fail((mensaje) => this.mostrarError(mensaje));
+    }
+
+    cargarKml() {
+        new LectorKml(this.ruta.planimetria).cargar()
+            .done((coordenadas) => this.dibujar(coordenadas))
+            .fail(() => this.mostrarError("No se pudo cargar el archivo KML de la ruta."));
+    }
+
+    dibujar(coordenadas) {
+        if (coordenadas.length === 0) {
+            this.mostrarError("El archivo KML no contiene coordenadas válidas.");
+            return;
         }
-    }
 
-    insertarTrazado(coordenadas, origen) {
-        const ancho = this.tamanoTesela * this.dimensionTeselas;
-        const alto = this.tamanoTesela * this.dimensionTeselas;
-        const puntos = coordenadas.map((punto) => {
-            const proyectado = this.coordenadaATesela(punto, this.zoom);
-            const x = (proyectado.x - origen.x) * this.tamanoTesela;
-            const y = (proyectado.y - origen.y) * this.tamanoTesela;
-            return `${x.toFixed(2)},${y.toFixed(2)}`;
-        }).join(" ");
+        this.mapa = new google.maps.Map(this.contenedor[0], {
+            center: this.ruta.inicio.aGoogleMaps(),
+            zoom: 14,
+            mapTypeId: "terrain"
+        });
 
-        const svg = $(document.createElementNS("http://www.w3.org/2000/svg", "svg")).attr({
-            viewBox: `0 0 ${ancho} ${alto}`,
-            role: "img",
-            "aria-label": `Planimetría de ${this.nombreRuta}`
+        const limites = new google.maps.LatLngBounds();
+        const camino = coordenadas.map((coordenada) => {
+            const punto = coordenada.aGoogleMaps();
+            limites.extend(punto);
+            return punto;
         });
-        const linea = $(document.createElementNS("http://www.w3.org/2000/svg", "polyline")).attr({
-            points: puntos,
-            fill: "none",
-            stroke: "#c21807",
-            "stroke-width": "8",
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round"
-        });
-        svg.append(linea);
-        coordenadas.forEach((punto) => {
-            const proyectado = this.coordenadaATesela(punto, this.zoom);
-            const marca = $(document.createElementNS("http://www.w3.org/2000/svg", "circle")).attr({
-                cx: ((proyectado.x - origen.x) * this.tamanoTesela).toFixed(2),
-                cy: ((proyectado.y - origen.y) * this.tamanoTesela).toFixed(2),
-                r: "7",
-                fill: "#ffffff",
-                stroke: "#004f59",
-                "stroke-width": "4"
-            });
-            svg.append(marca);
-        });
-        this.contenedor.append(svg);
-    }
 
-    coordenadaATesela(coordenada, zoom) {
-        const latitudRad = coordenada.latitud * Math.PI / 180;
-        const escala = 2 ** zoom;
-        return {
-            x: ((coordenada.longitud + 180) / 360) * escala,
-            y: ((1 - Math.log(Math.tan(latitudRad) + 1 / Math.cos(latitudRad)) / Math.PI) / 2) * escala
-        };
+        new google.maps.Polyline({
+            path: camino,
+            geodesic: true,
+            strokeColor: "#c21807",
+            strokeOpacity: 0.9,
+            strokeWeight: 5,
+            map: this.mapa
+        });
+
+        this.ruta.hitos.forEach((hito) => {
+            if (hito.coordenada.esValida()) {
+                new google.maps.Marker({
+                    position: hito.coordenada.aGoogleMaps(),
+                    map: this.mapa,
+                    title: hito.nombre
+                });
+            }
+        });
+
+        this.mapa.fitBounds(limites);
     }
 
     mostrarError(mensaje) {
@@ -190,8 +200,9 @@ class MapaOsmKml {
 }
 
 class VistaRutas {
-    constructor(contenedor) {
+    constructor(contenedor, cargadorGoogleMaps) {
         this.contenedor = contenedor;
+        this.cargadorGoogleMaps = cargadorGoogleMaps;
     }
 
     mostrar(rutas) {
@@ -210,15 +221,17 @@ class VistaRutas {
         articulo.append($("<h4></h4>").text("Hitos de la ruta"));
         articulo.append(this.listaHitos(ruta.hitos));
         articulo.append($("<h4></h4>").text("Planimetría"));
+
         const figuraMapa = $("<figure></figure>");
         const contenedorMapa = $("<div></div>").attr({
             role: "application",
             "aria-label": `Mapa dinámico de ${ruta.nombre}`
         });
         figuraMapa.append(contenedorMapa);
-        figuraMapa.append($("<figcaption></figcaption>").text(`Mapa cargado desde ${ruta.planimetria}.`));
+        figuraMapa.append($("<figcaption></figcaption>").text(`Mapa de Google Maps con la planimetría de ${ruta.planimetria}.`));
         articulo.append(figuraMapa);
-        new MapaOsmKml(contenedorMapa, ruta.planimetria, ruta.nombre).cargar();
+        new MapaGoogleKml(contenedorMapa, ruta, this.cargadorGoogleMaps).cargar();
+
         articulo.append($("<h4></h4>").text("Altimetría"));
         const figuraAltimetria = $("<figure></figure>");
         figuraAltimetria.append($("<figcaption></figcaption>").text(`Altimetría cargada desde ${ruta.altimetria}.`));
@@ -293,7 +306,8 @@ class VistaRutas {
 class GestorRutasTuristicas {
     constructor() {
         this.contenedor = $("main section").first();
-        this.vista = new VistaRutas(this.contenedor);
+        this.cargadorGoogleMaps = new CargadorGoogleMaps(window.GOOGLE_MAPS_API_KEY);
+        this.vista = new VistaRutas(this.contenedor, this.cargadorGoogleMaps);
     }
 
     iniciar() {
