@@ -15,7 +15,20 @@ header {
 header h1 { margin: 0; font-size: 1.8rem; }
 
 /* Especificidad: (0,0,1) */
-nav { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+form {
+    display: grid;
+    /* Creamos 2 columnas idénticas para pantallas grandes */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    align-items: start; /* Evita que las cajas se estiren para igualar a la más alta de su fila */
+}
+
+/* Especificidad: (0,0,2) */
+/* El texto de "Responde las diez preguntas" y el botón final deben ocupar todo el ancho, no quedarse en una columnita */
+form > p,
+form > button {
+    grid-column: 1 / -1;
+}
 
 /* Especificidad: (0,0,1) */
 main {
@@ -64,7 +77,10 @@ footer { padding: 1em 5vw; text-align: center; }
         flex-direction: column; /* LA RESTRICCIÓN: Navegación en columna */
         width: 100%; /* Asegura que no se desborde */
     }
-
+    form {
+            /* Obligamos a que pase a 1 sola columna */
+            grid-template-columns: 1fr;
+        }
     /* Especificidad: (0,0,2) */
     nav a {
         display: block; /* Mejora la usabilidad en móvil: toda la línea es clickable */
