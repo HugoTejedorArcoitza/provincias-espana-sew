@@ -44,7 +44,12 @@ main {
     margin: 1em auto;
     padding: 1.5em 5vw;
 }
-
+/* Especificidad: (0,0,2) */
+section div, article div {
+    overflow-x: auto;
+    width: 100%;
+    margin-bottom: 1rem; /* Espaciado entre bloques (layout) */
+}
 /* Especificidad: (0,0,1) */
 section {
     margin-bottom: 2rem;

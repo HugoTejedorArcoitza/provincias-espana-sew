@@ -17,6 +17,23 @@ header h1 a {
     text-decoration: none;
 }
 
+/* Especificidad: (0,0,1) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff; /* Estilo visual */
+}
+/* Especificidad: (0,0,1) */
+th, td {
+    padding: 0.5rem;
+    border: 1px solid #ccc; /* Estilo visual */
+    text-align: left;
+}
+/* Especificidad: (0,0,1) */
+th {
+    background-color: #f2f2f2; /* Estilo visual */
+}
+
 /* Especificidad: (0,0,2) */
 /* El enlace hereda el fondo oscuro del header; el color blanco garantiza contraste AAA sin redefinir fondo. */
 nav a {
