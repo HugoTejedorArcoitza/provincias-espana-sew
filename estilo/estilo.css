@@ -25,7 +25,7 @@ table {
 
 /* Especificidad: (0,0,2) */
 td button {
-  color: #000000; /* Fondo heredado del elemento ancestro/body. */
+  color: #ffffff; /* Fondo heredado del elemento ancestro/body. */
   cursor: pointer;
   font-size: 0.9rem;
 }
