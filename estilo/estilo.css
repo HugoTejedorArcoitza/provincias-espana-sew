@@ -23,11 +23,29 @@ table {
     border-collapse: collapse;
     background-color: #ffffff; /* Estilo visual */
 }
+
+/* Especificidad: (0,0,2) */
+td button {
+ width: 100%;
+ padding: 0.5em 0.75em;
+ box-sizing: border-box;
+ cursor: pointer;
+ font-size: 0.9rem;
+}
+
+
+/* Especificidad: (0,0,1) */
+td {
+ white-space: normal;
+ min-width: 5em;
+}
+
+
 /* Especificidad: (0,0,1) */
 th, td {
-    padding: 0.5rem;
-    border: 1px solid #ccc; /* Estilo visual */
-    text-align: left;
+ padding: 0.5rem;
+ border: 0.06em solid #ccc;
+ text-align: left;
 }
 /* Especificidad: (0,0,1) */
 th {
