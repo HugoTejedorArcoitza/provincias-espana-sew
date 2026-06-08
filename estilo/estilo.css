@@ -115,17 +115,18 @@ figure {
     color: #1f2933;
 }
 /* Especificidad: (0,0,2) */
+/* Especificidad: (0,0,2) */
 td button {
     width: 100%;
-    /* Padding relativo basado en em para que el botón crezca con el texto */
-    padding: 0.4em 0.2em;
+    padding: 0.5em;
     box-sizing: border-box;
     cursor: pointer;
-    /* Esto permite que el texto se ajuste y sea legible */
-    font-size: 0.85rem;
-    white-space: nowrap; /* Evita que el texto del botón salte de línea y lo agrande innecesariamente */
-    overflow: hidden;    /* Si el texto es demasiado largo, lo oculta elegantemente */
-    text-overflow: ellipsis; /* Añade los puntos suspensivos ... si el texto no cabe */
+    font-size: 0.9rem;
+
+    /* El recorte de texto */
+    white-space: nowrap;     /* Obliga al texto a estar en una sola línea */
+    overflow: hidden;        /* Oculta lo que se sale de los bordes del botón */
+    text-overflow: ellipsis; /* Añade los "..." al final si no cabe */
 }
 /* Especificidad: (0,0,1) */
 figcaption { font-weight: bold; }
