@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         new Pregunta("¿Qué técnica de marinado es típica en Sevilla?", ["Escabeche", "Adobo", "Salazón", "Ahumado", "Curado"], 1),
         new Pregunta("¿En qué estación es más típico consumir torrijas en Sevilla?", ["Verano", "Otoño", "Invierno", "Semana Santa", "Navidad"], 3),
         new Pregunta("¿Qué tipo de transporte se utiliza en la ruta 'Guadalquivir y Parque de María Luisa'?", ["A pie", "Bicicleta", "Autobús", "Coche", "Metro"], 1),
-        new Pregunta("¿Cuál es el punto de inicio de la ruta 'Sevilla Monumental y Triana'?", ["Plaza de España", "Torre del Oro", "Patio de Banderas", "Alameda de Hércules", "Plaza Nueva"], 2),
+        new Pregunta("¿Cuál es el punto de inicio de la ruta 'Sevilla Monumental y Triana'?", ["Plaza de España", "Torre del Oro", "Real Alcázar de Sevilla", "Alameda de Hércules", "Plaza Nueva"], 2),
         new Pregunta("¿Qué monumento NO forma parte de la ruta 'Sevilla Monumental y Triana'?", ["Real Alcázar de Sevilla", "Catedral de Sevilla", "Metropol Parasol", "Palacio de San Telmo", "Hospital de los Venerables"], 2),
         new Pregunta("¿Qué tipo de aceituna se menciona en la sección de gastronomía?", ["Kalamata", "Gordal", "Arbequina", "Picual", "Cornicabra"], 1),
         new Pregunta("¿Cómo se llama el pequeño bocadillo típico mencionado en la web?", ["Tapa", "Pincho", "Montadito", "Bocata", "Ración"], 2),

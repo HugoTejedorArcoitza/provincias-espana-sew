@@ -76,6 +76,16 @@ figure img {
   margin: 0 auto;
 }
 
+/* Especificidad: (0,0,3) */
+/* Control restrictivo para las imágenes dinámicas de las rutas */
+article li img {
+    display: block;
+    max-width: 100%;    /* REGLA DE ORO: Nunca superes el ancho de la pantalla del móvil */
+    width: 25em;        /* En escritorio, no pases de este tamaño para no verte "gigante" */
+    height: auto;       /* Mantén la proporción original para no deformarte */
+    margin: 0.8em 0 1.5em 0; /* Dale un respiro visual respecto al siguiente punto */
+}
+
 /* Especificidad: (0,0,1) */
 fieldset {
   display: flex;
