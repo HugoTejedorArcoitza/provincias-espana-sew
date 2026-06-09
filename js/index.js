@@ -128,6 +128,10 @@ class NoticiasSevilla {
             $contenedor = this.#seccion.find("article");
         }
 
+        if ($contenedor.find("h3").length === 0) {
+            $contenedor.prepend("<h3>Titulares locales</h3>");
+        }
+
         const lista = $("<ul></ul>");
         [
             "Consulta la agenda turística oficial de Sevilla en nuestro menú.",
