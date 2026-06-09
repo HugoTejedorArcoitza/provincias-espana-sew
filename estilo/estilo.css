@@ -89,6 +89,8 @@ h4 {
 /* Especificidad: (0,0,1) */
 a {
   color: #005a8d; /* Advertencia W3C: Fondo heredado del elemento ancestro/body.. */
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 /* Especificidad: (0,0,1) */
