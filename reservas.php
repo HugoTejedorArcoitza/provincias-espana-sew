@@ -110,7 +110,7 @@ $app = Controlador::ejecutar();
                     <h4>Catálogo de actividades</h4>
                     <ul>
                         <?php foreach ($app->datosRecursos as $recurso):
-                            // Extraemos las marcas de tiempo una sola vez para que sea más limpio
+                            // Reutilización de marcas de tiempo para mostrar fecha y hora.
                             $tInicio = strtotime($recurso['inicio']);
                             $tFin = strtotime($recurso['fin']);
                         ?>

@@ -26,7 +26,7 @@ class RepositorioReservas
             }
 
             return [
-                // Mantenemos `id_usuario` en retorno para no romper la sesion del controlador.
+                // Alias de compatibilidad con la clave de sesión usada por el controlador.
                 'id_usuario' => (int)$usuario['id_cli'],
                 'nombre' => (string)($usuario['nombre_cli'] ?? $usuario['nombre'] ?? ''),
                 'email_cli' => (string)$usuario['email_cli']

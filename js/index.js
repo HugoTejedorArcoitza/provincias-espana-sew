@@ -14,7 +14,7 @@ class CarruselFotos {
         this.#imagenes = imagenes;
         this.#posicion = 0;
 
-        // Buscamos los elementos dentro de la sección asignada
+        // Elementos internos de la sección asignada.
         this.#figura = this.#seccion.find("figure").first();
         this.#imagen = this.#figura.find("img").first();
         this.#pie = this.#figura.find("figcaption").first();
@@ -22,10 +22,10 @@ class CarruselFotos {
     }
 
    iniciar() {
-       // 1. Envolvemos el contenido en el article
+       // Agrupación semántica del carrusel.
        this.#seccion.children("figure, button").wrapAll("<article></article>");
 
-       // 2. Inyectamos el encabezado DENTRO del article (esto quita el warning)
+       // Encabezado del artículo del carrusel.
        this.#seccion.find("article").prepend("<h3>Imágenes destacadas</h3>");
 
        this.#botones.eq(0).on("click", () => this.anterior());
@@ -87,23 +87,23 @@ class NoticiasSevilla {
         this.#seccion.find("p").remove();
         let $contenedor = this.#seccion.find("article");
 
-        // Si no tienes article, lo creamos
+        // Crea el contenedor de noticias si todavía no existe.
         if ($contenedor.length === 0) {
             this.#seccion.append("<article></article>");
             $contenedor = this.#seccion.find("article");
         }
 
-        // Inyectamos el h3 al principio
+        // Encabezado del artículo de noticias.
         if ($contenedor.find("h3").length === 0) {
             $contenedor.prepend("<h3>Titulares locales</h3>");
         }
 
-        // Limpiamos la lista anterior si existía para no duplicar
+        // Evita duplicar la lista de noticias.
         $contenedor.find("ul").remove();
 
         const lista = $("<ul></ul>");
 
-        // The News API a veces devuelve un objeto, aseguramos que sea array
+        // Normaliza la respuesta del servicio a una lista.
         const listaNoticias = Array.isArray(noticias) ? noticias : [];
 
         listaNoticias.forEach(n => {

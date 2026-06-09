@@ -26,11 +26,11 @@ class ConexionReservas
 
     private function inicializarBaseDatos(): void
     {
-        // Crear BD si no existe y seleccionarla
+        // Creación y selección de la base de datos del proyecto.
         $this->conexion->exec("CREATE DATABASE IF NOT EXISTS " . self::BASE_DATOS . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         $this->conexion->exec("USE " . self::BASE_DATOS);
 
-        // Cargamos el esquema canónico desde crear_base_datos.sql (contiene la definición de Cliente y reservas con id_cli)
+        // Carga del esquema canónico desde crear_base_datos.sql.
         $sql = file_get_contents(__DIR__ . '/crear_base_datos.sql');
         if ($sql) {
             $this->conexion->exec($sql);
@@ -112,7 +112,7 @@ class ConexionReservas
             return;
         }
         $stmt = $this->conexion->prepare($consultaPreparada);
-        fgetcsv($gestor); // Saltar cabecera
+        fgetcsv($gestor); // Omite la cabecera del CSV.
         while (($datos = fgetcsv($gestor, 1000, ",")) !== false) {
             $stmt->execute($datos);
         }

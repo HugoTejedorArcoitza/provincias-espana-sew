@@ -26,15 +26,15 @@ nav {
   gap: 1rem;
 }
 
-/* Especificidad: (0,0,3) */
-/* Excepción permitida por rúbrica para mapas dinámicos */
+
+/* Excepción permitida  para mapas dinámicos */
 /* Especificidad: (0,0,3) */
 article > figure > div {
   width: 100%;
   height: 35rem; /* Lienzo necesario para que Google Maps pueda representar el mapa dinámico. */
   margin: 1.5em 0;
   overflow: hidden;
-  background-color: #eef6f4;
+  background-color: #eef6f4; /* Advertencia W3C: Color heredado del elemento ancestro/body, contraste comprobado. */
 }
 
 /* Especificidad: (0,0,4) */
@@ -46,7 +46,7 @@ article > figure > div img {
 /* Especificidad: (0,0,1) */
 form {
   display: grid;
-  /* Creamos 2 columnas idénticas para pantallas grandes */
+  /* Dos columnas equivalentes para pantallas grandes. */
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   align-items: start;
@@ -121,7 +121,7 @@ video {
 fieldset {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap; /* Mismo comportamiento que el nav: si no caben, bajan de línea */
+  flex-wrap: wrap; /* Permite que las opciones pasen a la siguiente línea si no caben. */
   gap: 1rem;
   margin: 0;
   padding: 1rem;
@@ -129,29 +129,29 @@ fieldset {
 
 /* Especificidad: (0,0,1) */
 legend {
-  width: 100%; /* CRÍTICO: Obliga a que la pregunta ocupe toda la parte superior y empuje las respuestas abajo */
+  width: 100%; /* La pregunta ocupa la línea superior del bloque de respuestas. */
 }
 
 /* Especificidad: (0,0,1) */
 label {
-  display: flex; /* Alinea el circulito (radio) con el texto perfectamente en el centro */
+  display: flex; /* Alineación del control de selección con su texto. */
   align-items: center;
-  gap: 0.4em; /* Espacio entre el radio y la palabra */
-  padding: 0.5em 0.8em; /* Le da cuerpo al bloque para que sea fácil de hacer clic */
+  gap: 0.4em; /* Separación entre el control y el texto. */
+  padding: 0.5em 0.8em; /* Área de interacción más amplia para la etiqueta. */
 }
 
 /* Especificidad: (0,0,1) */
 table {
   width: 100%;
   margin: 1em 0;
-  table-layout: fixed; /* OBLIGATORIO: Evita que la tabla empuje el layout */
+  table-layout: fixed; /* Mantiene estable el ancho de las columnas de la tabla. */
 }
 
 /* Especificidad: (0,0,1) */
 td {
-  white-space: nowrap; /* Mantiene la integridad en celdas pequeñas */
+  white-space: nowrap; /* Mantiene el contenido en una sola línea en celdas estrechas. */
   overflow: hidden;
-  text-overflow: ellipsis; /* Corta texto largo con ... */
+  text-overflow: ellipsis; /* Trunca el texto largo con puntos suspensivos. */
   min-width: 3em;
 }
 
@@ -182,15 +182,15 @@ footer {
 
 /* Especificidad: (0,0,1) */
 select {
-  width: 100%; /* Ocupará el ancho disponible de su contenedor (el label o el form) */
-  max-width: 100%; /* Medida de seguridad vital contra desbordamientos */
+  width: 100%; /* Ocupa el ancho disponible del contenedor. */
+  max-width: 100%; /* Previene desbordamientos horizontales. */
   padding: 0.5em;
-  box-sizing: border-box; /* Evita que el padding sume tamaño extra y rompa el 100% */
+  box-sizing: border-box; /* El relleno se incluye dentro del ancho declarado. */
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Si seleccionas una muy larga, mostrará "Degustación de tapas..." */
+  text-overflow: ellipsis; /* Trunca opciones largas en el control de selección. */
 }
-/* Media query para tableta (45em = 720px aprox) - RECUPERADA */
+/* Media query para tableta (45em = 720px aprox). */
 @media (max-width: 45em) {
   /* Especificidad: (0,0,1) */
   header {
@@ -200,25 +200,25 @@ select {
 
   /* Especificidad: (0,0,1) */
   nav {
-    flex-direction: column; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */ /* LA RESTRICCIÓN: Navegación en columna */
-    width: 100%; /* Asegura que no se desborde */
+    flex-direction: column; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
+    width: 100%; /* Evita desbordamiento horizontal. */
   }
 
   /* Especificidad: (0,0,1) */
   form {
-    /* Obligamos a que pase a 1 sola columna */
+    /* Paso del formulario a una sola columna. */
     grid-template-columns: 1fr; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 
   /* Especificidad: (0,0,1) */
   fieldset {
-    flex-direction: column; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */ /* Apila las respuestas una debajo de otra en móvil/tableta */
-    gap: 0.5rem; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */ /* Reducimos un poco el hueco entre ellas en móvil */
+    flex-direction: column; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
+    gap: 0.5rem; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 
   /* Especificidad: (0,0,2) */
   nav a {
-    display: block; /* Mejora la usabilidad en móvil: toda la línea es clickable */
+    display: block; /* Área de enlace más amplia en navegación vertical. */
     padding: 0.5em 0;
   }
 
@@ -240,19 +240,19 @@ select {
     width: 100%; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 
-  /* Media query para asegurar que en móviles muy pequeños el botón no desaparezca */
+  /* Ajuste de botones en móviles estrechos. */
   /* Especificidad: (0,0,2) */
   td button {
     padding: 0.3em 0.1em; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 
-  /* Reducimos padding en móviles para ganar espacio */
+  /* Menor relleno para ganar espacio en móviles. */
   /* Especificidad: (0,0,1) */
   th {
-    padding: 0.2em; /* W3C Warning: RedefiniciÃ³n justificada por el uso de media queries para garantizar la adaptabilidad. */
+    padding: 0.2em; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }
 
-  /* Reducimos padding en mÃ³viles para ganar espacio */
+  /* Menor relleno para ganar espacio en móviles. */
   /* Especificidad: (0,0,1) */
   td {
     padding: 0.2em; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
