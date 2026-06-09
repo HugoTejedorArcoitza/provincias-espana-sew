@@ -8,6 +8,8 @@ $app = Controlador::ejecutar();
     <meta charset="UTF-8" />
     <title>Sevilla-Desktop - Reservas</title>
     <meta name="author" content="Hugo Tejedor" />
+    <meta name="description" content="Reservas turísticas de Sevilla con acceso de usuarios y gestión de actividades" />
+    <meta name="keywords" content="Sevilla, reservas, turismo, actividades, usuarios" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
     <link rel="stylesheet" type="text/css" href="estilo/layout.css" />
