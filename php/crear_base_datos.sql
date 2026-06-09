@@ -4,13 +4,6 @@ CREATE DATABASE IF NOT EXISTS sevilla_reservas
 
 USE sevilla_reservas;
 
-
-CREATE DATABASE IF NOT EXISTS sevilla_reservas
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-
-USE sevilla_reservas;
-
 -- Esquema canónico actualizado: tabla Cliente con clave_cli.
 CREATE TABLE IF NOT EXISTS Cliente (
     id_cli INT AUTO_INCREMENT PRIMARY KEY,

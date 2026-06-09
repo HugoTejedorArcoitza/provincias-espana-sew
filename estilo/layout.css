@@ -216,7 +216,7 @@ select {
     gap: 0.5rem; /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */ /* Reducimos un poco el hueco entre ellas en móvil */
   }
 
-  /* Especificidad: (0,0,4) */
+  /* Especificidad: (0,0,2) */
   nav a {
     display: block; /* Mejora la usabilidad en móvil: toda la línea es clickable */
     padding: 0.5em 0;
@@ -227,7 +227,7 @@ select {
     grid-template-columns: 1fr;
   }
 
-  /* Especificidad: (0,0,2) */
+  /* Especificidad: (0,0,3) */
   article > figure > div {
     grid-template-columns: repeat(2, 1fr); /* W3C Warning: Redefinición justificada por el uso de media queries para garantizar la adaptabilidad. */
   }

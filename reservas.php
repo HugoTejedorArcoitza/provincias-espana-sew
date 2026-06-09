@@ -7,7 +7,7 @@ $app = Controlador::ejecutar();
 <head>
     <meta charset="UTF-8" />
     <title>Sevilla-Desktop - Reservas</title>
-    <meta name="author" content="Tu Nombre Aquí" />
+    <meta name="author" content="Hugo Tejedor" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
     <link rel="stylesheet" type="text/css" href="estilo/layout.css" />

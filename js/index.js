@@ -82,7 +82,7 @@ class NoticiasSevilla {
     }
 
     mostrar(noticias) {
-        console.log("Noticias recibidas:", noticias); // MIRA LA CONSOLA (F12)
+
 
         this.#seccion.find("p").remove();
         let $contenedor = this.#seccion.find("article");

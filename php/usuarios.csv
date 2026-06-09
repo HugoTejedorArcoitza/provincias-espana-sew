@@ -1,2 +1,2 @@
-id_usuario,nombre,correo,telefono
-1,Usuario Prueba,usuario@example.com,600000000
+id_cli,nombre_cli,email_cli,clave_cli
+1,Usuario Prueba,usuario@example.com,usuario123
